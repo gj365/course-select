@@ -1,12 +1,43 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh">
 <head>
-    <meta charset="UTF-8">
-    <title>测试网页</title>
+  <meta charset="UTF-8" />
+  <title>Supabase 连接测试</title>
 </head>
 <body>
-    <h1>NAS 网站测试成功！</h1>
-    <p>如果你能看到这段文字，说明 Web Station 配置正确。</p>
+  <h2>Supabase 连接测试</h2>
+
+  <div>
+    <input id="email" placeholder="邮箱" />
+    <input id="name" placeholder="名字" />
+    <input id="kana" placeholder="假名" />
+    <button onclick="testEnroll()">测试写入</button>
+  </div>
+
+  <pre id="result"></pre>
+
+  <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+  <script>
+    const supabase = window.supabase.createClient(
+      "https://course-select.supabase.co",
+      "sb_secret_LJ_qkdhnGCWKJM6erkWsZA_C78FFtAj"
+    );
+
+    async function testEnroll() {
+      const email = document.getElementById("email").value;
+      const name = document.getElementById("name").value;
+      const kana = document.getElementById("kana").value;
+
+      const { error } = await supabase.rpc("enroll_time_slot", {
+        p_time_slot: "test-slot",
+        p_name: name,
+        p_kana: kana,
+        p_email: email
+      });
+
+      document.getElementById("result").textContent =
+        error ? "❌ 失败: " + error.message : "✅ 成功：已写入数据库";
+    }
+  </script>
 </body>
 </html>
-
