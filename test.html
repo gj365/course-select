@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <title>Supabase 数据库连接测试</title>
+</head>
+<body>
+
+  <h2>Supabase 数据库连接测试</h2>
+
+  <button id="btn">点我测试数据库</button>
+
+  <pre id="log">（等待点击）</pre>
+
+  <!-- 1️⃣ 加载 Supabase SDK -->
+  <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+
+  <!-- 2️⃣ 测试脚本 -->
+  <script>
+    const log = document.getElementById("log");
+    const btn = document.getElementById("btn");
+
+    // ⚠️ 换成你自己的
+    const SUPABASE_URL = "https://course-select.supabase.co";
+    const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlvZGlqbmhieGloYXN0dWtucWt5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njk4NjgyNTIsImV4cCI6MjA4NTQ0NDI1Mn0.PTG1s0Zv14VX-yfrZNmJqyu-R7wlvJl3_YYcq40g6Y4";
+
+    // 创建客户端
+    const supabase = window.supabase.createClient(
+      SUPABASE_URL,
+      SUPABASE_ANON_KEY
+    );
+
+    btn.addEventListener("click", async () => {
+      log.textContent = "⏳ 正在连接数据库…";
+
+      try {
+        // 3️⃣ 最安全的测试：select 1 行
+        const { data, error } = await supabase
+          .from("course_enrollments")
+          .select("*")
+          .limit(1);
+
+        if (error) {
+          log.textContent = "❌ 数据库返回错误：\n" + error.message;
+        } else {
+          log.textContent =
+            "✅ 数据库连接成功！\n\n返回数据：\n" +
+            JSON.stringify(data, null, 2);
+        }
+      } catch (e) {
+        log.textContent = "❌ JS 异常：\n" + e.message;
+      }
+    });
+  </script>
+
+</body>
+</html>
