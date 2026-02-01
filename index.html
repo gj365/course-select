@@ -1,1 +1,121 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>选课时间表</title>
+  <style>
+    /* 设置表格外观 */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+    th, td {
+      border: 1px solid #ccc;
+      padding: 10px;
+      text-align: center;
+    }
+    th {
+      background-color: #f4f4f4;
+    }
+    td {
+      cursor: pointer;
+    }
+    td.booked {
+      background-color: #f8d7da;
+      pointer-events: none;  /* 禁止点击 */
+    }
+    td.available {
+      background-color: #d4edda;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>选课时间表</h2>
+
+  <!-- 表格 -->
+  <table id="course-table">
+    <thead>
+      <tr>
+        <th>时间段</th>
+        <th>3/31</th>
+        <th>4/1</th>
+        <th>4/2</th>
+        <th>4/3</th>
+        <th>4/4</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- 时间段的行 -->
+      <tr>
+        <td>9:00 - 9:30</td>
+        <td class="available" data-max="2" data-remaining="2" onclick="enroll(this)">2</td>
+        <td class="available" data-max="2" data-remaining="2" onclick="enroll(this)">2</td>
+        <td class="available" data-max="2" data-remaining="2" onclick="enroll(this)">2</td>
+        <td class="available" data-max="2" data-remaining="2" onclick="enroll(this)">2</td>
+        <td class="available" data-max="2" data-remaining="2" onclick="enroll(this)">2</td>
+      </tr>
+      <tr>
+        <td>9:30 - 10:00</td>
+        <td class="available" data-max="2" data-remaining="2" onclick="enroll(this)">2</td>
+        <td class="available" data-max="2" data-remaining="2" onclick="enroll(this)">2</td>
+        <td class="available" data-max="2" data-remaining="2" onclick="enroll(this)">2</td>
+        <td class="available" data-max="2" data-remaining="2" onclick="enroll(this)">2</td>
+        <td class="available" data-max="2" data-remaining="2" onclick="enroll(this)">2</td>
+      </tr>
+      <!-- 更多时间段可以在这里添加 -->
+    </tbody>
+  </table>
+
+  <script>
+    // 选课函数
+    function enroll(cell) {
+      const maxSlots = parseInt(cell.getAttribute('data-max'));
+      let remainingSlots = parseInt(cell.getAttribute('data-remaining'));
+
+      // 如果名额已满，提示用户
+      if (remainingSlots <= 0) {
+        alert("该时间段已满，无法选课！");
+        return;
+      }
+
+      // 更新剩余名额
+      remainingSlots--;
+      cell.setAttribute('data-remaining', remainingSlots);
+
+      // 更新显示的剩余名额
+      cell.textContent = remainingSlots;
+
+      // 如果名额满了，禁用该单元格
+      if (remainingSlots === 0) {
+        cell.classList.add('booked');
+        cell.classList.remove('available');
+      }
+    }
+
+    // 自动初始化所有单元格的剩余名额
+    function initTable() {
+      const cells = document.querySelectorAll('td');
+      cells.forEach(cell => {
+        const remainingSlots = parseInt(cell.getAttribute('data-remaining'));
+        // 如果剩余名额为 0，禁用该单元格
+        if (remainingSlots === 0) {
+          cell.classList.add('booked');
+          cell.classList.remove('available');
+        } else {
+          cell.classList.add('available');
+          cell.classList.remove('booked');
+        }
+      });
+    }
+
+    // 初始化表格
+    initTable();
+  </script>
+
+</body>
+</html>
+
 
