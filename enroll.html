@@ -2,56 +2,81 @@
 <html lang="zh">
 <head>
   <meta charset="UTF-8">
-  <title>Supabase 数据库连接测试</title>
+  <title>选课确认</title>
+  <style>
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont;
+      padding: 20px;
+    }
+    label {
+      display: block;
+      margin-top: 10px;
+    }
+    input {
+      padding: 5px;
+      margin-top: 5px;
+      width: 100%;
+      max-width: 300px;
+    }
+    button {
+      margin-top: 15px;
+      padding: 10px 20px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    .back-btn {
+      background-color: #f0f0f0;
+    }
+    .confirm-btn {
+      background-color: #4CAF50;
+      color: white;
+    }
+  </style>
 </head>
 <body>
 
-  <h2>Supabase 数据库连接测试</h2>
+<h2>选课确认</h2>
 
-  <button id="btn">点我测试数据库</button>
+<p><strong>已选择时间段：</strong><span id="selected-time"></span></p>
 
-  <pre id="log">（等待点击）</pre>
+<form id="enroll-form">
+  <label for="name">姓名：</label>
+  <input type="text" id="name" name="name" required />
 
-  <!-- 1️⃣ 加载 Supabase SDK -->
-  <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+  <label for="kana">假名：</label>
+  <input type="text" id="kana" name="kana" required />
 
-  <!-- 2️⃣ 测试脚本 -->
-  <script>
-    const log = document.getElementById("log");
-    const btn = document.getElementById("btn");
+  <label for="email">邮箱：</label>
+  <input type="email" id="email" name="email" required />
 
-    // ⚠️ 换成你自己的
-    const SUPABASE_URL = "https://course-select.supabase.co";
-    const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlvZGlqbmhieGloYXN0dWtucWt5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njk4NjgyNTIsImV4cCI6MjA4NTQ0NDI1Mn0.PTG1s0Zv14VX-yfrZNmJqyu-R7wlvJl3_YYcq40g6Y4";
+  <button type="button" class="confirm-btn" onclick="submitForm()">确认选课</button>
+  <button type="button" class="back-btn" onclick="window.history.back()">返回</button>
+</form>
 
-    // 创建客户端
-    const supabase = window.supabase.createClient(
-      SUPABASE_URL,
-      SUPABASE_ANON_KEY
-    );
+<script>
+  // 从 URL 获取参数（时间段和日期）
+  const urlParams = new URLSearchParams(window.location.search);
+  const time = urlParams.get('time');
+  const date = urlParams.get('date');
 
-    btn.addEventListener("click", async () => {
-      log.textContent = "⏳ 正在连接数据库…";
+  // 显示选择的时间段
+  document.getElementById('selected-time').textContent = `${date} ${time}`;
 
-      try {
-        // 3️⃣ 最安全的测试：select 1 行
-        const { data, error } = await supabase
-          .from("course_enrollments")
-          .select("*")
-          .limit(1);
+  // 提交表单函数
+  function submitForm() {
+    const name = document.getElementById('name').value;
+    const kana = document.getElementById('kana').value;
+    const email = document.getElementById('email').value;
 
-        if (error) {
-          log.textContent = "❌ 数据库返回错误：\n" + error.message;
-        } else {
-          log.textContent =
-            "✅ 数据库连接成功！\n\n返回数据：\n" +
-            JSON.stringify(data, null, 2);
-        }
-      } catch (e) {
-        log.textContent = "❌ JS 异常：\n" + e.message;
-      }
-    });
-  </script>
+    if (name && kana && email) {
+      // 这里可以将数据发送到后端或数据库，模拟成功
+      alert('选课成功！');
+      window.location.href = 'index.html'; // 跳回主页面
+    } else {
+      alert('请填写完整信息！');
+    }
+  }
+</script>
 
 </body>
 </html>
