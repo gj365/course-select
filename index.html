@@ -120,7 +120,8 @@
       // 查询该时间段和日期的已选人数
       const { count, error } = await supabaseClient
         .from("enrollments")
-        .select("*", { count: "exact" })
+//        .select("*", { count: "exact" })
+        .select("count", { count: "exact" }) // 只返回记录数
         .eq("time_slot", time)
         .eq("date", date);
 
@@ -158,6 +159,7 @@
 
 </body>
 </html>
+
 
 
 
