@@ -117,18 +117,16 @@
 //      alert(`正在查询时间段: ${time} 日期: ${date}`);
 
       // 查询该时间段和日期的已选人数
-const { data, error } = await supabaseClient
+const { data, error, count } = await supabaseClient
   .from("enrollments")
-  .select("*", { count: "exact" }) // 选择所有列并返回记录数
-  .eq("time_slot", time)  // 传入时间段
-  .eq("date", date);  // 传入日期
+  .select("*", { count: "exact" })  // 获取所有记录的同时获取记录数
+  .eq("time_slot", "9:00 - 9:30")
+  .eq("date", "3/31");
 
 if (error) {
   console.error("查询出错：", error.message);
 } else {
-  console.log("查询结果：", data);
-  const count = data.length; // 记录数量
-  console.log("已选人数：", count);
+  console.log("记录数：", count); // 返回符合条件的记录数
 }
 
       // 默认剩余名额为2
@@ -159,6 +157,7 @@ if (error) {
 
 </body>
 </html>
+
 
 
 
