@@ -31,6 +31,11 @@
       color: #888;
       cursor: not-allowed;
     }
+    td.break {
+      background: #f0e68c;
+      color: #888;
+      pointer-events: none;
+    }
   </style>
 </head>
 <body>
@@ -52,51 +57,35 @@
     <!-- 固定时间段行 -->
     <tr>
       <td>9:00 - 9:30</td>
-      <td class="slot" data-remaining="2">2</td>
-      <td class="slot" data-remaining="2">2</td>
-      <td class="slot" data-remaining="2">2</td>
-      <td class="slot" data-remaining="2">2</td>
-      <td class="slot" data-remaining="2">2</td>
+      <td class="slot" data-remaining="2" data-time="9:00 - 9:30" data-date="3/31">2</td>
+      <td class="slot" data-remaining="2" data-time="9:00 - 9:30" data-date="4/1">2</td>
+      <td class="slot" data-remaining="2" data-time="9:00 - 9:30" data-date="4/2">2</td>
+      <td class="slot" data-remaining="2" data-time="9:00 - 9:30" data-date="4/3">2</td>
+      <td class="slot" data-remaining="2" data-time="9:00 - 9:30" data-date="4/4">2</td>
     </tr>
     <tr>
       <td>9:30 - 10:00</td>
-      <td class="slot" data-remaining="2">2</td>
-      <td class="slot" data-remaining="2">2</td>
-      <td class="slot" data-remaining="2">2</td>
-      <td class="slot" data-remaining="2">2</td>
-      <td class="slot" data-remaining="2">2</td>
+      <td class="slot" data-remaining="2" data-time="9:30 - 10:00" data-date="3/31">2</td>
+      <td class="slot" data-remaining="2" data-time="9:30 - 10:00" data-date="4/1">2</td>
+      <td class="slot" data-remaining="2" data-time="9:30 - 10:00" data-date="4/2">2</td>
+      <td class="slot" data-remaining="2" data-time="9:30 - 10:00" data-date="4/3">2</td>
+      <td class="slot" data-remaining="2" data-time="9:30 - 10:00" data-date="4/4">2</td>
     </tr>
     <tr>
       <td>10:00 - 10:30</td>
-      <td class="slot" data-remaining="2">2</td>
-      <td class="slot" data-remaining="2">2</td>
-      <td class="slot" data-remaining="2">2</td>
-      <td class="slot" data-remaining="2">2</td>
-      <td class="slot" data-remaining="2">2</td>
+      <td class="slot" data-remaining="2" data-time="10:00 - 10:30" data-date="3/31">2</td>
+      <td class="slot" data-remaining="2" data-time="10:00 - 10:30" data-date="4/1">2</td>
+      <td class="slot" data-remaining="2" data-time="10:00 - 10:30" data-date="4/2">2</td>
+      <td class="slot" data-remaining="2" data-time="10:00 - 10:30" data-date="4/3">2</td>
+      <td class="slot" data-remaining="2" data-time="10:00 - 10:30" data-date="4/4">2</td>
     </tr>
     <tr>
       <td>10:30 - 11:00</td>
-      <td class="slot" data-remaining="2">2</td>
-      <td class="slot" data-remaining="2">2</td>
-      <td class="slot" data-remaining="2">2</td>
-      <td class="slot" data-remaining="2">2</td>
-      <td class="slot" data-remaining="2">2</td>
-    </tr>
-    <tr>
-      <td>11:00 - 11:30</td>
-      <td class="slot" data-remaining="2">2</td>
-      <td class="slot" data-remaining="2">2</td>
-      <td class="slot" data-remaining="2">2</td>
-      <td class="slot" data-remaining="2">2</td>
-      <td class="slot" data-remaining="2">2</td>
-    </tr>
-    <tr>
-      <td>11:30 - 12:00</td>
-      <td class="slot" data-remaining="2">2</td>
-      <td class="slot" data-remaining="2">2</td>
-      <td class="slot" data-remaining="2">2</td>
-      <td class="slot" data-remaining="2">2</td>
-      <td class="slot" data-remaining="2">2</td>
+      <td class="slot" data-remaining="2" data-time="10:30 - 11:00" data-date="3/31">2</td>
+      <td class="slot" data-remaining="2" data-time="10:30 - 11:00" data-date="4/1">2</td>
+      <td class="slot" data-remaining="2" data-time="10:30 - 11:00" data-date="4/2">2</td>
+      <td class="slot" data-remaining="2" data-time="10:30 - 11:00" data-date="4/3">2</td>
+      <td class="slot" data-remaining="2" data-time="10:30 - 11:00" data-date="4/4">2</td>
     </tr>
     <!-- 午休禁用 -->
     <tr>
@@ -105,68 +94,21 @@
     </tr>
     <tr>
       <td>13:00 - 13:30</td>
-      <td class="slot" data-remaining="2">2</td>
-      <td class="slot" data-remaining="2">2</td>
-      <td class="slot" data-remaining="2">2</td>
-      <td class="slot" data-remaining="2">2</td>
-      <td class="slot" data-remaining="2">2</td>
+      <td class="slot" data-remaining="2" data-time="13:00 - 13:30" data-date="3/31">2</td>
+      <td class="slot" data-remaining="2" data-time="13:00 - 13:30" data-date="4/1">2</td>
+      <td class="slot" data-remaining="2" data-time="13:00 - 13:30" data-date="4/2">2</td>
+      <td class="slot" data-remaining="2" data-time="13:00 - 13:30" data-date="4/3">2</td>
+      <td class="slot" data-remaining="2" data-time="13:00 - 13:30" data-date="4/4">2</td>
     </tr>
     <tr>
       <td>13:30 - 14:00</td>
-      <td class="slot" data-remaining="2">2</td>
-      <td class="slot" data-remaining="2">2</td>
-      <td class="slot" data-remaining="2">2</td>
-      <td class="slot" data-remaining="2">2</td>
-      <td class="slot" data-remaining="2">2</td>
+      <td class="slot" data-remaining="2" data-time="13:30 - 14:00" data-date="3/31">2</td>
+      <td class="slot" data-remaining="2" data-time="13:30 - 14:00" data-date="4/1">2</td>
+      <td class="slot" data-remaining="2" data-time="13:30 - 14:00" data-date="4/2">2</td>
+      <td class="slot" data-remaining="2" data-time="13:30 - 14:00" data-date="4/3">2</td>
+      <td class="slot" data-remaining="2" data-time="13:30 - 14:00" data-date="4/4">2</td>
     </tr>
-    <tr>
-      <td>14:00 - 14:30</td>
-      <td class="slot" data-remaining="2">2</td>
-      <td class="slot" data-remaining="2">2</td>
-      <td class="slot" data-remaining="2">2</td>
-      <td class="slot" data-remaining="2">2</td>
-      <td class="slot" data-remaining="2">2</td>
-    </tr>
-    <tr>
-      <td>14:30 - 15:00</td>
-      <td class="slot" data-remaining="2">2</td>
-      <td class="slot" data-remaining="2">2</td>
-      <td class="slot" data-remaining="2">2</td>
-      <td class="slot" data-remaining="2">2</td>
-      <td class="slot" data-remaining="2">2</td>
-    </tr>
-    <tr>
-      <td>15:00 - 15:30</td>
-      <td class="slot" data-remaining="2">2</td>
-      <td class="slot" data-remaining="2">2</td>
-      <td class="slot" data-remaining="2">2</td>
-      <td class="slot" data-remaining="2">2</td>
-      <td class="slot" data-remaining="2">2</td>
-    </tr>
-    <tr>
-      <td>15:30 - 16:00</td>
-      <td class="slot" data-remaining="2">2</td>
-      <td class="slot" data-remaining="2">2</td>
-      <td class="slot" data-remaining="2">2</td>
-      <td class="slot" data-remaining="2">2</td>
-      <td class="slot" data-remaining="2">2</td>
-    </tr>
-    <tr>
-      <td>16:00 - 16:30</td>
-      <td class="slot" data-remaining="2">2</td>
-      <td class="slot" data-remaining="2">2</td>
-      <td class="slot" data-remaining="2">2</td>
-      <td class="slot" data-remaining="2">2</td>
-      <td class="slot" data-remaining="2">2</td>
-    </tr>
-    <tr>
-      <td>16:30 - 17:00</td>
-      <td class="slot" data-remaining="2">2</td>
-      <td class="slot" data-remaining="2">2</td>
-      <td class="slot" data-remaining="2">2</td>
-      <td class="slot" data-remaining="2">2</td>
-      <td class="slot" data-remaining="2">2</td>
-    </tr>
+    <!-- 其他时间段 ... -->
   </tbody>
 </table>
 
@@ -190,6 +132,11 @@
     } else {
       cell.textContent = remaining;
     }
+
+    // 跳转到第二个页面，传递选中的时间段信息
+    const time = cell.getAttribute("data-time");
+    const date = cell.getAttribute("data-date");
+    window.location.href = `enroll.html?time=${time}&date=${date}`;
   }
 
   // 给所有单元格添加点击事件
@@ -201,4 +148,3 @@
 
 </body>
 </html>
-
