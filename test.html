@@ -15,33 +15,29 @@
 <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
 
 <script>
+  alert("JS 已开始执行（1）");
+
   const log = document.getElementById("log");
   const btn = document.getElementById("btn");
 
-  const SUPABASE_URL = "https://course-select.supabase.co";
-  const SUPABASE_ANON_KEY = "【你自己的 anon public key】";
+  alert("JS 执行到创建 supabase 之前（2）");
 
-  // ② 只在这里声明一次（非常重要）
+  const SUPABASE_URL = "https://course-select.supabase.co";
+  const SUPABASE_ANON_KEY = "你的 anon key";
+
   const supabaseClient = window.supabase.createClient(
     SUPABASE_URL,
     SUPABASE_ANON_KEY
   );
 
+  alert("Supabase client 创建成功（3）");
+
   btn.onclick = async () => {
-    log.textContent = "⏳ 正在连接数据库…";
-
-    const { data, error } = await supabaseClient
-      .from("course_enrollments")
-      .select("*")
-      .limit(1);
-
-    if (error) {
-      log.textContent = "❌ 错误：\n" + error.message;
-    } else {
-      log.textContent = "✅ 成功！\n\n" + JSON.stringify(data, null, 2);
-    }
+    log.textContent = "按钮点击成功";
   };
 </script>
 
+
 </body>
 </html>
+
