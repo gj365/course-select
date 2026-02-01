@@ -2,7 +2,7 @@
 <html lang="zh">
 <head>
   <meta charset="UTF-8">
-  <title>选课时间表（固定时间段）</title>
+  <title>选课时间表（数据库关联）</title>
   <style>
     body {
       font-family: system-ui, -apple-system, BlinkMacSystemFont;
@@ -57,86 +57,129 @@
     <!-- 固定时间段行 -->
     <tr>
       <td>9:00 - 9:30</td>
-      <td class="slot" data-remaining="2" data-time="9:00 - 9:30" data-date="3/31">2</td>
-      <td class="slot" data-remaining="2" data-time="9:00 - 9:30" data-date="4/1">2</td>
-      <td class="slot" data-remaining="2" data-time="9:00 - 9:30" data-date="4/2">2</td>
-      <td class="slot" data-remaining="2" data-time="9:00 - 9:30" data-date="4/3">2</td>
-      <td class="slot" data-remaining="2" data-time="9:00 - 9:30" data-date="4/4">2</td>
+      <td class="slot" data-time="9:00 - 9:30" data-date="3/31">2</td>
+      <td class="slot" data-time="9:00 - 9:30" data-date="4/1">2</td>
+      <td class="slot" data-time="9:00 - 9:30" data-date="4/2">2</td>
+      <td class="slot" data-time="9:00 - 9:30" data-date="4/3">2</td>
+      <td class="slot" data-time="9:00 - 9:30" data-date="4/4">2</td>
     </tr>
     <tr>
       <td>9:30 - 10:00</td>
-      <td class="slot" data-remaining="2" data-time="9:30 - 10:00" data-date="3/31">2</td>
-      <td class="slot" data-remaining="2" data-time="9:30 - 10:00" data-date="4/1">2</td>
-      <td class="slot" data-remaining="2" data-time="9:30 - 10:00" data-date="4/2">2</td>
-      <td class="slot" data-remaining="2" data-time="9:30 - 10:00" data-date="4/3">2</td>
-      <td class="slot" data-remaining="2" data-time="9:30 - 10:00" data-date="4/4">2</td>
+      <td class="slot" data-time="9:30 - 10:00" data-date="3/31">2</td>
+      <td class="slot" data-time="9:30 - 10:00" data-date="4/1">2</td>
+      <td class="slot" data-time="9:30 - 10:00" data-date="4/2">2</td>
+      <td class="slot" data-time="9:30 - 10:00" data-date="4/3">2</td>
+      <td class="slot" data-time="9:30 - 10:00" data-date="4/4">2</td>
     </tr>
     <tr>
       <td>10:00 - 10:30</td>
-      <td class="slot" data-remaining="2" data-time="10:00 - 10:30" data-date="3/31">2</td>
-      <td class="slot" data-remaining="2" data-time="10:00 - 10:30" data-date="4/1">2</td>
-      <td class="slot" data-remaining="2" data-time="10:00 - 10:30" data-date="4/2">2</td>
-      <td class="slot" data-remaining="2" data-time="10:00 - 10:30" data-date="4/3">2</td>
-      <td class="slot" data-remaining="2" data-time="10:00 - 10:30" data-date="4/4">2</td>
+      <td class="slot" data-time="10:00 - 10:30" data-date="3/31">2</td>
+      <td class="slot" data-time="10:00 - 10:30" data-date="4/1">2</td>
+      <td class="slot" data-time="10:00 - 10:30" data-date="4/2">2</td>
+      <td class="slot" data-time="10:00 - 10:30" data-date="4/3">2</td>
+      <td class="slot" data-time="10:00 - 10:30" data-date="4/4">2</td>
     </tr>
-    <tr>
-      <td>10:30 - 11:00</td>
-      <td class="slot" data-remaining="2" data-time="10:30 - 11:00" data-date="3/31">2</td>
-      <td class="slot" data-remaining="2" data-time="10:30 - 11:00" data-date="4/1">2</td>
-      <td class="slot" data-remaining="2" data-time="10:30 - 11:00" data-date="4/2">2</td>
-      <td class="slot" data-remaining="2" data-time="10:30 - 11:00" data-date="4/3">2</td>
-      <td class="slot" data-remaining="2" data-time="10:30 - 11:00" data-date="4/4">2</td>
-    </tr>
-    <!-- 午休禁用 -->
     <tr>
       <td>12:00 - 13:00</td>
       <td class="break" colspan="5">午休，不能选课</td>
     </tr>
     <tr>
       <td>13:00 - 13:30</td>
-      <td class="slot" data-remaining="2" data-time="13:00 - 13:30" data-date="3/31">2</td>
-      <td class="slot" data-remaining="2" data-time="13:00 - 13:30" data-date="4/1">2</td>
-      <td class="slot" data-remaining="2" data-time="13:00 - 13:30" data-date="4/2">2</td>
-      <td class="slot" data-remaining="2" data-time="13:00 - 13:30" data-date="4/3">2</td>
-      <td class="slot" data-remaining="2" data-time="13:00 - 13:30" data-date="4/4">2</td>
+      <td class="slot" data-time="13:00 - 13:30" data-date="3/31">2</td>
+      <td class="slot" data-time="13:00 - 13:30" data-date="4/1">2</td>
+      <td class="slot" data-time="13:00 - 13:30" data-date="4/2">2</td>
+      <td class="slot" data-time="13:00 - 13:30" data-date="4/3">2</td>
+      <td class="slot" data-time="13:00 - 13:30" data-date="4/4">2</td>
     </tr>
     <tr>
       <td>13:30 - 14:00</td>
-      <td class="slot" data-remaining="2" data-time="13:30 - 14:00" data-date="3/31">2</td>
-      <td class="slot" data-remaining="2" data-time="13:30 - 14:00" data-date="4/1">2</td>
-      <td class="slot" data-remaining="2" data-time="13:30 - 14:00" data-date="4/2">2</td>
-      <td class="slot" data-remaining="2" data-time="13:30 - 14:00" data-date="4/3">2</td>
-      <td class="slot" data-remaining="2" data-time="13:30 - 14:00" data-date="4/4">2</td>
+      <td class="slot" data-time="13:30 - 14:00" data-date="3/31">2</td>
+      <td class="slot" data-time="13:30 - 14:00" data-date="4/1">2</td>
+      <td class="slot" data-time="13:30 - 14:00" data-date="4/2">2</td>
+      <td class="slot" data-time="13:30 - 14:00" data-date="4/3">2</td>
+      <td class="slot" data-time="13:30 - 14:00" data-date="4/4">2</td>
     </tr>
-    <!-- 其他时间段 ... -->
   </tbody>
 </table>
 
+<script src="https://unpkg.com/@supabase/supabase-js@2"></script>
 <script>
-  // 选课函数
-  function enroll(cell) {
+  // 创建 Supabase 客户端
+  const supabase = window.supabase.createClient(
+    "https://your-project-url.supabase.co",  // 替换为你的 Supabase URL
+    "your-anon-key"  // 替换为你的 anon key
+  );
+
+  // 从数据库获取课程名额数据并更新页面
+  async function loadSchedule() {
+    // 获取所有课程的数据
+    const slots = document.querySelectorAll(".slot");
+    for (let cell of slots) {
+      const time = cell.getAttribute("data-time");
+      const date = cell.getAttribute("data-date");
+
+      // 查询该时间段的已选人数
+      const { count, error } = await supabase
+        .from("enrollments")
+        .select("*", { count: "exact" })
+        .eq("time_slot", time)
+        .eq("date", date);
+
+      if (error) {
+        console.error("Error loading data:", error.message);
+        return;
+      }
+
+      // 默认剩余名额为2
+      let remaining = 2;
+
+      // 如果有记录，计算剩余名额
+      if (count > 0) {
+        remaining = 2 - count; // 2减去已选人数
+      }
+
+      // 更新页面显示剩余名额
+      cell.textContent = remaining;
+      cell.setAttribute("data-remaining", remaining);
+      
+      // 如果名额已满，禁用该时间段
+      if (remaining === 0) {
+        cell.classList.add("full");
+        cell.classList.remove("slot");
+      }
+    }
+  }
+
+  // 选课操作，更新数据库
+  async function enroll(cell) {
     let remaining = parseInt(cell.getAttribute("data-remaining"));
+    const time = cell.getAttribute("data-time");
+    const date = cell.getAttribute("data-date");
 
     if (remaining <= 0) {
       alert("该时间段已满，无法选课！");
       return;
     }
 
+    // 减少剩余名额
     remaining--;
     cell.setAttribute("data-remaining", remaining);
+    cell.textContent = remaining;
 
-    if (remaining === 0) {
-      cell.textContent = "已满";
-      cell.classList.add("full");
-      cell.classList.remove("slot");
+    // 更新数据库中的剩余名额
+    const { error } = await supabase
+      .from("enrollments")
+      .upsert({ time_slot: time, date: date }, { onConflict: ["time_slot", "date"] });
+
+    if (error) {
+      console.error("Error updating slot:", error.message);
     } else {
-      cell.textContent = remaining;
+      // 名额减为 0 时，标记为已满
+      if (remaining === 0) {
+        cell.classList.add("full");
+        cell.classList.remove("slot");
+      }
     }
-
-    // 跳转到第二个页面，传递选中的时间段信息
-    const time = cell.getAttribute("data-time");
-    const date = cell.getAttribute("data-date");
-    window.location.href = `enroll.html?time=${time}&date=${date}`;
   }
 
   // 给所有单元格添加点击事件
@@ -144,6 +187,9 @@
   slots.forEach(cell => {
     cell.onclick = () => enroll(cell);
   });
+
+  // 加载课程数据
+  loadSchedule();
 </script>
 
 </body>
