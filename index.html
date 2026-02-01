@@ -71,7 +71,34 @@
       <td class="slot" data-time="9:30 - 10:00" data-date="4/3">2</td>
       <td class="slot" data-time="9:30 - 10:00" data-date="4/4">2</td>
     </tr>
-    <!-- 继续其他时间段 -->
+    <tr>
+      <td>10:00 - 10:30</td>
+      <td class="slot" data-time="10:00 - 10:30" data-date="3/31">2</td>
+      <td class="slot" data-time="10:00 - 10:30" data-date="4/1">2</td>
+      <td class="slot" data-time="10:00 - 10:30" data-date="4/2">2</td>
+      <td class="slot" data-time="10:00 - 10:30" data-date="4/3">2</td>
+      <td class="slot" data-time="10:00 - 10:30" data-date="4/4">2</td>
+    </tr>
+    <tr>
+      <td>12:00 - 13:00</td>
+      <td class="break" colspan="5">午休，不能选课</td>
+    </tr>
+    <tr>
+      <td>13:00 - 13:30</td>
+      <td class="slot" data-time="13:00 - 13:30" data-date="3/31">2</td>
+      <td class="slot" data-time="13:00 - 13:30" data-date="4/1">2</td>
+      <td class="slot" data-time="13:00 - 13:30" data-date="4/2">2</td>
+      <td class="slot" data-time="13:00 - 13:30" data-date="4/3">2</td>
+      <td class="slot" data-time="13:00 - 13:30" data-date="4/4">2</td>
+    </tr>
+    <tr>
+      <td>13:30 - 14:00</td>
+      <td class="slot" data-time="13:30 - 14:00" data-date="3/31">2</td>
+      <td class="slot" data-time="13:30 - 14:00" data-date="4/1">2</td>
+      <td class="slot" data-time="13:30 - 14:00" data-date="4/2">2</td>
+      <td class="slot" data-time="13:30 - 14:00" data-date="4/3">2</td>
+      <td class="slot" data-time="13:30 - 14:00" data-date="4/4">2</td>
+    </tr>
   </tbody>
 </table>
 
@@ -85,14 +112,14 @@
 
   // 从数据库获取课程名额数据并更新页面
   async function loadSchedule() {
+    // 获取所有课程的单元格
     const slots = document.querySelectorAll(".slot");
-    
-    // 遍历所有时间段的单元格
-    for (let cell of slots) {
-      const time = cell.getAttribute("data-time");  // 获取时间段
-      const date = cell.getAttribute("data-date");  // 获取日期
 
-      // 查询数据库，获取当前时间段和日期的已选人数
+    for (let cell of slots) {
+      const time = cell.getAttribute("data-time");
+      const date = cell.getAttribute("data-date");
+
+      // 查询该时间段和日期的已选人数
       const { count, error } = await supabase
         .from("enrollments")
         .select("*", { count: "exact" })
@@ -107,15 +134,15 @@
       // 默认剩余名额为2
       let remaining = 2;
 
-      // 如果已有选课记录，计算剩余名额
+      // 如果有记录，计算剩余名额
       if (count > 0) {
-        remaining = 2 - count;  // 总名额2，减去已选人数
+        remaining = 2 - count;
       }
 
       // 更新页面显示剩余名额
       cell.textContent = remaining;
       cell.setAttribute("data-remaining", remaining);
-      
+
       // 如果名额已满，禁用该时间段
       if (remaining === 0) {
         cell.classList.add("full");
@@ -123,44 +150,6 @@
       }
     }
   }
-
-  // 选课操作，更新数据库
-  async function enroll(cell) {
-    let remaining = parseInt(cell.getAttribute("data-remaining"));
-    const time = cell.getAttribute("data-time");
-    const date = cell.getAttribute("data-date");
-
-    if (remaining <= 0) {
-      alert("该时间段已满，无法选课！");
-      return;
-    }
-
-    // 减少剩余名额
-    remaining--;
-    cell.setAttribute("data-remaining", remaining);
-    cell.textContent = remaining;
-
-    // 更新数据库中的剩余名额
-    const { error } = await supabase
-      .from("enrollments")
-      .upsert({ time_slot: time, date: date }, { onConflict: ["time_slot", "date"] });
-
-    if (error) {
-      console.error("Error updating slot:", error.message);
-    } else {
-      // 名额减为 0 时，标记为已满
-      if (remaining === 0) {
-        cell.classList.add("full");
-        cell.classList.remove("slot");
-      }
-    }
-  }
-
-  // 给所有单元格添加点击事件
-  const slots = document.querySelectorAll(".slot");
-  slots.forEach(cell => {
-    cell.onclick = () => enroll(cell);
-  });
 
   // 加载课程数据
   loadSchedule();
