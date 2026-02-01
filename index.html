@@ -101,6 +101,8 @@
     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."  // 替换为你的 anon key
   );
 
+  alert("Supabase 客户端创建成功");
+
   // 从数据库获取课程名额数据并更新页面
   async function loadSchedule() {
     const slots = document.querySelectorAll(".slot");
@@ -108,6 +110,8 @@
     for (let cell of slots) {
       const time = cell.getAttribute("data-time");
       const date = cell.getAttribute("data-date");
+
+      alert(`正在查询时间段: ${time} 日期: ${date}`);
 
       // 查询该时间段和日期的已选人数
       const { count, error } = await supabase
@@ -118,6 +122,7 @@
 
       if (error) {
         console.error("Error loading data:", error.message);
+        alert("查询出错: " + error.message);
         return;
       }
 
@@ -128,6 +133,8 @@
       if (count > 0) {
         remaining = 2 - count;
       }
+
+      console.log(`时间段: ${time} 日期: ${date} 剩余名额: ${remaining}`);
 
       // 更新页面显示剩余名额
       cell.textContent = remaining;
