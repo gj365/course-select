@@ -54,7 +54,6 @@
     </tr>
   </thead>
   <tbody>
-    <!-- 固定时间段行 -->
     <tr>
       <td>9:00 - 9:30</td>
       <td class="slot" data-time="9:00 - 9:30" data-date="3/31">2</td>
@@ -70,14 +69,6 @@
       <td class="slot" data-time="9:30 - 10:00" data-date="4/2">2</td>
       <td class="slot" data-time="9:30 - 10:00" data-date="4/3">2</td>
       <td class="slot" data-time="9:30 - 10:00" data-date="4/4">2</td>
-    </tr>
-    <tr>
-      <td>10:00 - 10:30</td>
-      <td class="slot" data-time="10:00 - 10:30" data-date="3/31">2</td>
-      <td class="slot" data-time="10:00 - 10:30" data-date="4/1">2</td>
-      <td class="slot" data-time="10:00 - 10:30" data-date="4/2">2</td>
-      <td class="slot" data-time="10:00 - 10:30" data-date="4/3">2</td>
-      <td class="slot" data-time="10:00 - 10:30" data-date="4/4">2</td>
     </tr>
     <tr>
       <td>12:00 - 13:00</td>
@@ -107,12 +98,11 @@
   // 创建 Supabase 客户端
   const supabase = window.supabase.createClient(
     "https://iodijnhbxihastuknqky.supabase.co",  // 替换为你的 Supabase URL
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlvZGlqbmhieGloYXN0dWtucWt5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njk4NjgyNTIsImV4cCI6MjA4NTQ0NDI1Mn0.PTG1s0Zv14VX-yfrZNmJqyu-R7wlvJl3_YYcq40g6Y4"  // 替换为你的 anon key
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."  // 替换为你的 anon key
   );
 
   // 从数据库获取课程名额数据并更新页面
   async function loadSchedule() {
-    // 获取所有课程的单元格
     const slots = document.querySelectorAll(".slot");
 
     for (let cell of slots) {
