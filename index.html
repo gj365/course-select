@@ -2,7 +2,7 @@
 <html lang="zh">
 <head>
   <meta charset="UTF-8">
-  <title>选课时间表（测试）</title>
+  <title>选课时间表（固定时间段）</title>
   <style>
     body {
       font-family: system-ui, -apple-system, BlinkMacSystemFont;
@@ -49,79 +49,149 @@
     </tr>
   </thead>
   <tbody>
-    <!-- JS 自动生成 -->
+    <!-- 固定时间段行 -->
+    <tr>
+      <td>9:00 - 9:30</td>
+      <td class="slot" data-remaining="2">2</td>
+      <td class="slot" data-remaining="2">2</td>
+      <td class="slot" data-remaining="2">2</td>
+      <td class="slot" data-remaining="2">2</td>
+      <td class="slot" data-remaining="2">2</td>
+    </tr>
+    <tr>
+      <td>9:30 - 10:00</td>
+      <td class="slot" data-remaining="2">2</td>
+      <td class="slot" data-remaining="2">2</td>
+      <td class="slot" data-remaining="2">2</td>
+      <td class="slot" data-remaining="2">2</td>
+      <td class="slot" data-remaining="2">2</td>
+    </tr>
+    <tr>
+      <td>10:00 - 10:30</td>
+      <td class="slot" data-remaining="2">2</td>
+      <td class="slot" data-remaining="2">2</td>
+      <td class="slot" data-remaining="2">2</td>
+      <td class="slot" data-remaining="2">2</td>
+      <td class="slot" data-remaining="2">2</td>
+    </tr>
+    <tr>
+      <td>10:30 - 11:00</td>
+      <td class="slot" data-remaining="2">2</td>
+      <td class="slot" data-remaining="2">2</td>
+      <td class="slot" data-remaining="2">2</td>
+      <td class="slot" data-remaining="2">2</td>
+      <td class="slot" data-remaining="2">2</td>
+    </tr>
+    <tr>
+      <td>11:00 - 11:30</td>
+      <td class="slot" data-remaining="2">2</td>
+      <td class="slot" data-remaining="2">2</td>
+      <td class="slot" data-remaining="2">2</td>
+      <td class="slot" data-remaining="2">2</td>
+      <td class="slot" data-remaining="2">2</td>
+    </tr>
+    <tr>
+      <td>11:30 - 12:00</td>
+      <td class="slot" data-remaining="2">2</td>
+      <td class="slot" data-remaining="2">2</td>
+      <td class="slot" data-remaining="2">2</td>
+      <td class="slot" data-remaining="2">2</td>
+      <td class="slot" data-remaining="2">2</td>
+    </tr>
+    <tr>
+      <td>13:00 - 13:30</td>
+      <td class="slot" data-remaining="2">2</td>
+      <td class="slot" data-remaining="2">2</td>
+      <td class="slot" data-remaining="2">2</td>
+      <td class="slot" data-remaining="2">2</td>
+      <td class="slot" data-remaining="2">2</td>
+    </tr>
+    <tr>
+      <td>13:30 - 14:00</td>
+      <td class="slot" data-remaining="2">2</td>
+      <td class="slot" data-remaining="2">2</td>
+      <td class="slot" data-remaining="2">2</td>
+      <td class="slot" data-remaining="2">2</td>
+      <td class="slot" data-remaining="2">2</td>
+    </tr>
+    <tr>
+      <td>14:00 - 14:30</td>
+      <td class="slot" data-remaining="2">2</td>
+      <td class="slot" data-remaining="2">2</td>
+      <td class="slot" data-remaining="2">2</td>
+      <td class="slot" data-remaining="2">2</td>
+      <td class="slot" data-remaining="2">2</td>
+    </tr>
+    <tr>
+      <td>14:30 - 15:00</td>
+      <td class="slot" data-remaining="2">2</td>
+      <td class="slot" data-remaining="2">2</td>
+      <td class="slot" data-remaining="2">2</td>
+      <td class="slot" data-remaining="2">2</td>
+      <td class="slot" data-remaining="2">2</td>
+    </tr>
+    <tr>
+      <td>15:00 - 15:30</td>
+      <td class="slot" data-remaining="2">2</td>
+      <td class="slot" data-remaining="2">2</td>
+      <td class="slot" data-remaining="2">2</td>
+      <td class="slot" data-remaining="2">2</td>
+      <td class="slot" data-remaining="2">2</td>
+    </tr>
+    <tr>
+      <td>15:30 - 16:00</td>
+      <td class="slot" data-remaining="2">2</td>
+      <td class="slot" data-remaining="2">2</td>
+      <td class="slot" data-remaining="2">2</td>
+      <td class="slot" data-remaining="2">2</td>
+      <td class="slot" data-remaining="2">2</td>
+    </tr>
+    <tr>
+      <td>16:00 - 16:30</td>
+      <td class="slot" data-remaining="2">2</td>
+      <td class="slot" data-remaining="2">2</td>
+      <td class="slot" data-remaining="2">2</td>
+      <td class="slot" data-remaining="2">2</td>
+      <td class="slot" data-remaining="2">2</td>
+    </tr>
+    <tr>
+      <td>16:30 - 17:00</td>
+      <td class="slot" data-remaining="2">2</td>
+      <td class="slot" data-remaining="2">2</td>
+      <td class="slot" data-remaining="2">2</td>
+      <td class="slot" data-remaining="2">2</td>
+      <td class="slot" data-remaining="2">2</td>
+    </tr>
   </tbody>
 </table>
 
 <script>
-  const dates = ["3/31", "4/1", "4/2", "4/3", "4/4"];
-  const MAX_SLOTS = 2;
-  const tbody = document.querySelector("#schedule tbody");
+  // 选课函数
+  function enroll(cell) {
+    let remaining = parseInt(cell.getAttribute("data-remaining"));
 
-  // 生成时间段：9:00 → 17:00（每 30 分）
-  function generateTimeSlots() {
-    const slots = [];
-    let hour = 9;
-    let minute = 0;
-
-    while (hour < 17) {
-      const start = formatTime(hour, minute);
-      minute += 30;
-      if (minute === 60) {
-        minute = 0;
-        hour++;
-      }
-      const end = formatTime(hour, minute);
-      slots.push(`${start} - ${end}`);
+    if (remaining <= 0) {
+      alert("该时间段已满，无法选课！");
+      return;
     }
-    return slots;
+
+    remaining--;
+    cell.setAttribute("data-remaining", remaining);
+
+    if (remaining === 0) {
+      cell.textContent = "已满";
+      cell.classList.add("full");
+      cell.classList.remove("slot");
+    } else {
+      cell.textContent = remaining;
+    }
   }
 
-  function formatTime(h, m) {
-    return `${String(h).padStart(2, "0")}:${String(m).padStart(2, "0")}`;
-  }
-
-  function renderTable() {
-    const timeSlots = generateTimeSlots();
-
-    timeSlots.forEach(time => {
-      const tr = document.createElement("tr");
-
-      // 第一列：时间段
-      const timeTd = document.createElement("td");
-      timeTd.textContent = time;
-      tr.appendChild(timeTd);
-
-      // 后面的日期列
-      dates.forEach(date => {
-        const td = document.createElement("td");
-        td.className = "slot";
-        td.dataset.remaining = MAX_SLOTS;
-        td.textContent = MAX_SLOTS;
-
-        td.onclick = () => {
-          let remain = Number(td.dataset.remaining);
-          if (remain <= 0) return;
-
-          remain--;
-          td.dataset.remaining = remain;
-
-          if (remain === 0) {
-            td.textContent = "已满";
-            td.className = "full";
-          } else {
-            td.textContent = remain;
-          }
-        };
-
-        tr.appendChild(td);
-      });
-
-      tbody.appendChild(tr);
-    });
-  }
-
-  renderTable();
+  // 给所有单元格添加点击事件
+  const slots = document.querySelectorAll(".slot");
+  slots.forEach(cell => {
+    cell.onclick = () => enroll(cell);
+  });
 </script>
 
 </body>
