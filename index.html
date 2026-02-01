@@ -100,7 +100,7 @@
   const SUPABASE_URL = "https://iodijnhbxihastuknqky.supabase.co";
   const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlvZGlqbmhieGloYXN0dWtucWt5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njk4NjgyNTIsImV4cCI6MjA4NTQ0NDI1Mn0.PTG1s0Zv14VX-yfrZNmJqyu-R7wlvJl3_YYcq40g6Y4";
 
-  const supabase = window.supabase.createClient(
+  const supabaseClient = window.supabase.createClient(
     SUPABASE_URL,
     SUPABASE_ANON_KEY
   );
@@ -118,7 +118,7 @@
       alert(`正在查询时间段: ${time} 日期: ${date}`);
 
       // 查询该时间段和日期的已选人数
-      const { count, error } = await supabase
+      const { count, error } = await supabaseClient
         .from("enrollments")
         .select("*", { count: "exact" })
         .eq("time_slot", time)
@@ -158,5 +158,6 @@
 
 </body>
 </html>
+
 
 
