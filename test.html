@@ -30,7 +30,7 @@
     log.textContent = "⏳ 正在访问 Supabase…";
 
     const { data, error } = await supabaseClient
-      .from("course_enrollments")
+      .from("enrollments")
       .select("*")
       .limit(1);
 
@@ -48,6 +48,7 @@
 
 </body>
 </html>
+
 
 
 
