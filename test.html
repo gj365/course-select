@@ -15,29 +15,38 @@
 <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
 
 <script>
-  alert("JS 已开始执行（1）");
-
   const log = document.getElementById("log");
   const btn = document.getElementById("btn");
 
-  alert("JS 执行到创建 supabase 之前（2）");
-
   const SUPABASE_URL = "https://course-select.supabase.co";
-  const SUPABASE_ANON_KEY = "你的 anon key";
+  const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlvZGlqbmhieGloYXN0dWtucWt5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njk4NjgyNTIsImV4cCI6MjA4NTQ0NDI1Mn0.PTG1s0Zv14VX-yfrZNmJqyu-R7wlvJl3_YYcq40g6Y4";
 
   const supabaseClient = window.supabase.createClient(
     SUPABASE_URL,
     SUPABASE_ANON_KEY
   );
 
-  alert("Supabase client 创建成功（3）");
-
   btn.onclick = async () => {
-    log.textContent = "按钮点击成功";
+    log.textContent = "⏳ 正在访问 Supabase…";
+
+    const { data, error } = await supabaseClient
+      .from("course_enrollments")
+      .select("*")
+      .limit(1);
+
+    if (error) {
+      log.textContent = "❌ Supabase 错误：\n" + error.message;
+    } else {
+      log.textContent =
+        "✅ 数据库访问成功：\n" +
+        JSON.stringify(data, null, 2);
+    }
   };
 </script>
 
 
+
 </body>
 </html>
+
 
