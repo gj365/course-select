@@ -114,20 +114,18 @@
       const time = cell.getAttribute("data-time");
       const date = cell.getAttribute("data-date");
 
-//      alert(`正在查询时间段: ${time} 日期: ${date}`);
-
-      // 查询该时间段和日期的已选人数
-const {count, error} = await supabaseClient
+const { count, error } = await supabaseClient
   .from("enrollments")
-  .select({ count: "exact" })  // 获取记录数
+  .select("count", { count: "exact" })  // 只获取记录数
   .eq("time_slot", "9:00 - 9:30")
   .eq("date", "3/31");
 
 if (error) {
   console.error("查询出错：", error.message);
 } else {
-  console.log("记录数：", count); // 返回符合条件的记录数
+  console.log("符合条件的记录数：", count);  // 只输出记录数
 }
+
 
       // 默认剩余名额为2
       let remaining = 2;
@@ -157,6 +155,7 @@ if (error) {
 
 </body>
 </html>
+
 
 
 
