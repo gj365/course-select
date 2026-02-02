@@ -41,16 +41,23 @@
   <div class="details">
     <p><strong>时间段：</strong><span id="time-slot"></span></p>
     <p><strong>日期：</strong><span id="date"></span></p>
-    <p><strong>姓名：</strong><span id="name"></span></p>
-    <p><strong>假名：</strong><span id="kana"></span></p>
-    <p><strong>邮箱：</strong><span id="email"></span></p>
+    <p><strong>姓名：</strong><input type="text" id="name" placeholder="请输入姓名"></p>
+    <p><strong>假名：</strong><input type="text" id="kana" placeholder="请输入假名"></p>
+    <p><strong>邮箱：</strong><input type="email" id="email" placeholder="请输入邮箱"></p>
   </div>
 
   <a href="index.html" class="btn cancel">返回</a>
-  <a href="#" class="btn">确认选课</a>
+  <button id="confirm" class="btn">确认选课</button>
 </div>
 
+<script src="https://unpkg.com/@supabase/supabase-js@2"></script>
 <script>
+  // 创建 Supabase 客户端
+  const SUPABASE_URL = "https://iodijnhbxihastuknqky.supabase.co";
+  const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlvZGlqbmhieGloYXN0dWtucWt5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njk4NjgyNTIsImV4cCI6MjA4NTQ0NDI1Mn0.PTG1s0Zv14VX-yfrZNmJqyu-R7wlvJl3_YYcq40g6Y4";
+
+  const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
   // 从 URL 中获取时间段和日期信息
   const urlParams = new URLSearchParams(window.location.search);
   const timeSlot = urlParams.get('time');
@@ -60,8 +67,30 @@
   document.getElementById("time-slot").textContent = timeSlot;
   document.getElementById("date").textContent = date;
 
-  // 查询选课记录（假设获取当前用户的选课信息）
-  // 这里可以根据需求查询数据库来填充姓名、假名和邮箱
+  // 点击确认选课按钮时执行
+  document.getElementById("confirm").onclick = async () => {
+    const name = document.getElementById("name").value;
+    const kana = document.getElementById("kana").value;
+    const email = document.getElementById("email").value;
+
+    if (!name || !kana || !email) {
+      alert("请填写所有信息！");
+      return;
+    }
+
+    // 执行数据库更新
+    const { data, error } = await supabaseClient
+      .from("enrollments")
+      .upsert({ time_slot: timeSlot, date: date, name: name, kana: kana, email: email }, { onConflict: ["time_slot", "date", "email"] });
+
+    if (error) {
+      console.error("更新失败:", error.message);
+      alert("选课失败，请稍后再试！");
+    } else {
+      alert("选课成功！");
+      window.location.href = "index.html"; // 返回到首页
+    }
+  };
 </script>
 
 </body>
