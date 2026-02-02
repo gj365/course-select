@@ -114,7 +114,7 @@ console.log(supabaseClient);
       const time = cell.getAttribute("data-time");
       const date = cell.getAttribute("data-date");
 
-const { data, error } = await supabase
+const { data, error } = await supabaseClient
   .from("enrollments")
   .select("*");
 
@@ -152,6 +152,7 @@ if (error) {
 
 </body>
 </html>
+
 
 
 
