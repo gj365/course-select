@@ -117,8 +117,8 @@ console.log(supabaseClient);
 const { count, error } = await supabaseClient
   .from("enrollments")
   .select("*", { count: "exact" })
-    .eq("time_slot", "9:00 - 9:30")
-  .eq("date", "3/31");;
+    .eq("time_slot", time)
+  .eq("date", date);
 
 if (error) {
   console.error("查询出错：", error.message);
@@ -154,6 +154,7 @@ if (error) {
 
 </body>
 </html>
+
 
 
 
