@@ -78,20 +78,29 @@
       return;
     }
 
-    // 执行数据库更新
-    const { data, error } = await supabaseClient
-      .from("enrollments")
-      .upsert({ time_slot: timeSlot, date: date, name: name, kana: kana, email: email }, { onConflict: ["time_slot", "date", "email"] });
-
-    if (error) {
-      console.error("更新失败:", error.message);
-      alert("选课失败，请稍后再试！");
-    } else {
-      alert("选课成功！");
-      window.location.href = "index.html"; // 返回到首页
+const { data, error } = await supabaseClient
+  .from("enrollments")
+  .insert([
+    { 
+      time_slot: timeSlot, 
+      date: date, 
+      name: name, 
+      kana: kana, 
+      email: email 
     }
+  ]);
+
+if (error) {
+  console.error("插入失败:", error.message);
+  alert("选课失败，请稍后再试！");
+} else {
+  alert("选课成功！");
+  window.location.href = "index.html"; // 返回到首页
+}
+
   };
 </script>
 
 </body>
 </html>
+
