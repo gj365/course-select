@@ -5,124 +5,152 @@
   <title>选课时间表（数据库关联）</title>
   <style>
     body {
-      font-family: system-ui, -apple-system, BlinkMacSystemFont;
+      font-family: 'Arial', sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f7f7f7;
+      color: #333;
+    }
+    h2 {
+      text-align: center;
+      color: #444;
+      margin-top: 20px;
     }
     table {
       border-collapse: collapse;
       margin-top: 20px;
       width: 100%;
-      max-width: 900px;
+      max-width: 1000px;
+      margin-left: auto;
+      margin-right: auto;
+      background-color: #fff;
     }
     th, td {
-      border: 1px solid #ccc;
-      padding: 8px;
+      border: 1px solid #ddd;
+      padding: 12px;
       text-align: center;
-      font-size: 14px;
+      font-size: 16px;
     }
     th {
-      background: #f4f4f4;
+      background-color: #f4f4f4;
+      color: #444;
     }
     td.slot {
       cursor: pointer;
-      background: #e8f5e9;
+      background-color: #e8f5e9;
+      transition: background-color 0.3s ease;
+    }
+    td.slot:hover {
+      background-color: #b2ebf2;
     }
     td.full {
-      background: #f8d7da;
+      background-color: #f8d7da;
       color: #888;
       cursor: not-allowed;
     }
     td.break {
-      background: #f0e68c;
+      background-color: #f0e68c;
       color: #888;
       pointer-events: none;
+    }
+    .slot, .full {
+      font-weight: bold;
+    }
+    .container {
+      width: 90%;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    .date-column {
+      font-weight: bold;
     }
   </style>
 </head>
 <body>
 
-<h2>选课时间表（剩余名额）</h2>
+<div class="container">
+  <h2>选课时间表（剩余名额）</h2>
 
-<table id="schedule">
-  <thead>
-    <tr>
-      <th>时间</th>
-      <th>3/31</th>
-      <th>4/1</th>
-      <th>4/2</th>
-      <th>4/3</th>
-      <th>4/4</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>9:00 - 9:30</td>
-      <td class="slot" data-time="9:00 - 9:30" data-date="3/31">2</td>
-      <td class="slot" data-time="9:00 - 9:30" data-date="4/1">2</td>
-      <td class="slot" data-time="9:00 - 9:30" data-date="4/2">2</td>
-      <td class="slot" data-time="9:00 - 9:30" data-date="4/3">2</td>
-      <td class="slot" data-time="9:00 - 9:30" data-date="4/4">2</td>
-    </tr>
-    <!-- 更多时间段 -->
-  </tbody>
-</table>
+  <table id="schedule">
+    <thead>
+      <tr>
+        <th>时间</th>
+        <th>3/31</th>
+        <th>4/1</th>
+        <th>4/2</th>
+        <th>4/3</th>
+        <th>4/4</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>9:00 - 9:30</td>
+        <td class="slot" data-time="9:00 - 9:30" data-date="3/31">2</td>
+        <td class="slot" data-time="9:00 - 9:30" data-date="4/1">2</td>
+        <td class="slot" data-time="9:00 - 9:30" data-date="4/2">2</td>
+        <td class="slot" data-time="9:00 - 9:30" data-date="4/3">2</td>
+        <td class="slot" data-time="9:00 - 9:30" data-date="4/4">2</td>
+      </tr>
+      <!-- More time slots here -->
+      <tr>
+        <td>9:30 - 10:00</td>
+        <td class="slot" data-time="9:30 - 10:00" data-date="3/31">2</td>
+        <td class="slot" data-time="9:30 - 10:00" data-date="4/1">2</td>
+        <td class="slot" data-time="9:30 - 10:00" data-date="4/2">2</td>
+        <td class="slot" data-time="9:30 - 10:00" data-date="4/3">2</td>
+        <td class="slot" data-time="9:30 - 10:00" data-date="4/4">2</td>
+      </tr>
+      <tr>
+        <td>12:00 - 13:00</td>
+        <td class="break" colspan="5">午休，不能选课</td>
+      </tr>
+      <!-- More time slots here -->
+    </tbody>
+  </table>
+</div>
 
 <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
 <script>
-  // 创建 Supabase 客户端
-  const SUPABASE_URL = "https://iodijnhbxihastuknqky.supabase.co";
-  const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlvZGlqbmhieGloYXN0dWtucWt5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njk4NjgyNTIsImV4cCI6MjA4NTQ0NDI1Mn0.PTG1s0Zv14VX-yfrZNmJqyu-R7wlvJl3_YYcq40g6Y4";
-  
-  const supabaseClient = window.supabase.createClient(
-    SUPABASE_URL,
-    SUPABASE_ANON_KEY
+  const supabase = window.supabase.createClient(
+    "https://iodijnhbxihastuknqky.supabase.co",
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlvZGlqbmhieGloYXN0dWtucWt5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njk4NjgyNTIsImV4cCI6MjA4NTQ0NDI1Mn0.PTG1s0Zv14VX-yfrZNmJqyu-R7wlvJl3_YYcq40g6Y4"
   );
 
-  // 从数据库获取课程名额数据并更新页面
   async function loadSchedule() {
     const slots = document.querySelectorAll(".slot");
-
     for (let cell of slots) {
       const time = cell.getAttribute("data-time");
       const date = cell.getAttribute("data-date");
 
-      const { count, error } = await supabaseClient
+      const { count, error } = await supabase
         .from("enrollments")
         .select("*", { count: "exact" })
         .eq("time_slot", time)
         .eq("date", date);
 
       if (error) {
-        console.error("查询出错：", error.message);
-      } else {
-        console.log("查询结果：", count);  // 查看查询结果
+        console.error("查询错误：", error.message);
+        continue;
       }
 
-      // 默认剩余名额为2
-      let remaining = 2;
-
-      // 如果有记录，计算剩余名额
+      let remaining = 2;  // 默认剩余名额
       if (count > 0) {
         remaining = 2 - count;
       }
 
-      // 更新页面显示剩余名额，作为链接
-      const link = document.createElement("a");
-      link.href = `enroll.html?time=${time}&date=${date}`;
-      link.textContent = remaining;
-      
-      cell.textContent = ''; // 清空单元格
-      cell.appendChild(link); // 插入链接
+      // 更新页面显示
+      cell.textContent = remaining;
+      cell.setAttribute("data-remaining", remaining);
 
-      // 如果名额已满，禁用该时间段
+      // 名额已满
       if (remaining === 0) {
+        cell.textContent = "已满员";
         cell.classList.add("full");
         cell.classList.remove("slot");
-        link.style.pointerEvents = "none";  // 禁用点击
       }
     }
   }
 
-  // 加载课程数据
   loadSchedule();
 </script>
 
