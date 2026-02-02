@@ -2,133 +2,169 @@
 <html lang="zh">
 <head>
   <meta charset="UTF-8">
-  <title>选课确认</title>
+  <title>选课详情</title>
   <style>
     body {
-      font-family: 'Arial', sans-serif;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont;
       margin: 0;
       padding: 0;
       background-color: #f7f7f7;
-      color: #333;
     }
     .container {
-      width: 90%;
-      max-width: 600px;
-      margin: 50px auto;
-      background-color: #fff;
+      margin-top: 20px;
       padding: 20px;
+      border: 1px solid #ccc;
+      max-width: 600px;
+      margin: 0 auto;
+      background-color: #fff;
       border-radius: 8px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     }
     h2 {
       text-align: center;
       color: #444;
     }
-    label {
-      display: block;
-      margin-top: 10px;
-      font-size: 14px;
+    .details {
+      margin-bottom: 20px;
+      font-size: 16px;
     }
-    input {
+    .details p {
+      margin-bottom: 15px;
+    }
+    .details p strong {
+      color: #333;
+    }
+    input[type="text"], input[type="email"] {
       width: 100%;
       padding: 10px;
       margin: 8px 0;
-      font-size: 16px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-      box-sizing: border-box;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      font-size: 14px;
     }
-    button {
-      width: 100%;
-      padding: 12px;
-      background-color: #4CAF50;
+    input[type="text"]:disabled, input[type="email"]:disabled {
+      background-color: #f5f5f5;
+    }
+    .btn {
+      display: inline-block;
+      padding: 10px 20px;
+      background: #4CAF50;
       color: white;
-      border: none;
-      border-radius: 4px;
-      font-size: 16px;
-      cursor: pointer;
-      margin-top: 20px;
-      transition: background-color 0.3s ease;
-    }
-    button:hover {
-      background-color: #45a049;
-    }
-    .back-button {
-      width: 100%;
-      padding: 12px;
-      background-color: #f44336;
-      color: white;
-      border: none;
-      border-radius: 4px;
-      font-size: 16px;
+      text-decoration: none;
+      border-radius: 5px;
       margin-top: 10px;
+      text-align: center;
       cursor: pointer;
-      transition: background-color 0.3s ease;
     }
-    .back-button:hover {
-      background-color: #e53935;
+    .btn.cancel {
+      background: #f44336;
+      margin-top: 20px;
+    }
+    .btn:disabled {
+      background: #ccc;
+      cursor: not-allowed;
+    }
+    .alert {
+      color: #d9534f;
+      text-align: center;
+      margin-top: 20px;
+      font-size: 16px;
     }
   </style>
 </head>
 <body>
 
 <div class="container">
-  <h2>填写选课信息</h2>
-  <form id="enrollForm">
-    <label for="name">姓名</label>
-    <input type="text" id="name" placeholder="请输入姓名" required />
+  <h2>选课详情</h2>
+  
+  <div class="details">
+    <p><strong>时间段：</strong><span id="time-slot"></span></p>
+    <p><strong>日期：</strong><span id="date"></span></p>
+    <p><strong>姓名：</strong><input type="text" id="name" placeholder="请输入姓名"></p>
+    <p><strong>假名：</strong><input type="text" id="kana" placeholder="请输入假名"></p>
+    <p><strong>邮箱：</strong><input type="email" id="email" placeholder="请输入邮箱"></p>
+  </div>
 
-    <label for="kana">假名</label>
-    <input type="text" id="kana" placeholder="请输入假名" required />
+  <a href="index.html" class="btn cancel">返回</a>
+  <button id="confirm" class="btn">确认选课</button>
 
-    <label for="email">邮箱</label>
-    <input type="email" id="email" placeholder="请输入邮箱" required />
-
-    <button type="submit">确认选课</button>
-    <button type="button" class="back-button" onclick="window.history.back()">返回</button>
-  </form>
+  <div id="alert-message" class="alert"></div>
 </div>
 
 <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
 <script>
-  const supabase = window.supabase.createClient(
-    "https://iodijnhbxihastuknqky.supabase.co",
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlvZGlqbmhieGloYXN0dWtucWt5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njk4NjgyNTIsImV4cCI6MjA4NTQ0NDI1Mn0.PTG1s0Zv14VX-yfrZNmJqyu-R7wlvJl3_YYcq40g6Y4"
-  );
+  // 创建 Supabase 客户端
+  const SUPABASE_URL = "https://iodijnhbxihastuknqky.supabase.co";
+  const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlvZGlqbmhieGloYXN0dWtucWt5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njk4NjgyNTIsImV4cCI6MjA4NTQ0NDI1Mn0.PTG1s0Zv14VX-yfrZNmJqyu-R7wlvJl3_YYcq40g6Y4";
 
-  document.getElementById("enrollForm").addEventListener("submit", async function(event) {
-    event.preventDefault();
+  const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
+  // 从 URL 中获取时间段和日期信息
+  const urlParams = new URLSearchParams(window.location.search);
+  const timeSlot = urlParams.get('time');
+  const date = urlParams.get('date');
+
+  // 获取选课详情
+  document.getElementById("time-slot").textContent = timeSlot;
+  document.getElementById("date").textContent = date;
+
+  // 插入前检查是否有两条记录
+  async function checkEnrollmentExistence() {
+    const { count, error } = await supabaseClient
+      .from("enrollments")
+      .select("*", { count: "exact" })
+      .eq("time_slot", timeSlot)
+      .eq("date", date);
+
+    if (error) {
+      console.error("查询失败:", error.message);
+      return false;
+    }
+
+    if (count >= 2) {
+      document.getElementById("alert-message").textContent = "该时间段已满，请返回选择其他时间。";
+      setTimeout(() => {
+        window.location.href = "index.html"; // 返回首页
+      }, 3000); // 等待3秒后返回
+      return false;
+    }
+
+    return true;
+  }
+
+  // 点击确认选课按钮时执行
+  document.getElementById("confirm").onclick = async () => {
     const name = document.getElementById("name").value;
     const kana = document.getElementById("kana").value;
     const email = document.getElementById("email").value;
-    const time_slot = new URLSearchParams(window.location.search).get("time");
-    const date = new URLSearchParams(window.location.search).get("date");
 
-    // 检查是否已满
-    const { count, error } = await supabase
-      .from("enrollments")
-      .select("*", { count: "exact" })
-      .eq("time_slot", time_slot)
-      .eq("date", date);
-
-    if (count >= 2) {
-      alert("该时间段已满，请选择其他时间。");
-      window.location.href = "/";  // 跳转到首页
+    if (!name || !kana || !email) {
+      alert("请填写所有信息！");
       return;
     }
 
-    const { error: insertError } = await supabase
-      .from("enrollments")
-      .insert([{ time_slot, date, name, kana, email }]);
+    const canInsert = await checkEnrollmentExistence();
+    if (!canInsert) return;  // 如果已有两条记录，直接返回
 
-    if (insertError) {
-      alert("选课失败: " + insertError.message);
+    const { data, error } = await supabaseClient
+      .from("enrollments")
+      .insert([
+        { 
+          time_slot: timeSlot, 
+          date: date, 
+          name: name, 
+          kana: kana, 
+          email: email 
+        }
+      ]);
+
+    if (error) {
+      console.error("插入失败:", error.message);
+      alert("选课失败，请稍后再试！");
     } else {
       alert("选课成功！");
-      window.location.href = "/";  // 选课成功后跳转到首页
+      window.location.href = "index.html"; // 返回到首页
     }
-  });
+  };
 </script>
 
 </body>
