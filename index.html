@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="zh">
+
 <head>
   <meta charset="UTF-8">
   <title>选课时间表（数据库关联）</title>
@@ -11,12 +12,14 @@
       background-color: #f7f7f7;
       color: #333;
     }
+
     h2 {
       text-align: center;
       color: #444;
       margin-top: 30px;
       font-size: 24px;
     }
+
     table {
       border-collapse: collapse;
       margin-top: 20px;
@@ -26,38 +29,48 @@
       margin-right: auto;
       background-color: #fff;
     }
-    th, td {
+
+    th,
+    td {
       border: 1px solid #ddd;
       padding: 12px;
       text-align: center;
       font-size: 16px;
     }
+
     th {
       background-color: #f4f4f4;
       color: #444;
     }
+
     td.slot {
       cursor: pointer;
       background-color: #e8f5e9;
       transition: background-color 0.3s ease;
     }
+
     td.slot:hover {
       background-color: #b2ebf2;
     }
+
     td.full {
       background-color: #f8d7da;
       color: #888;
       cursor: not-allowed;
       font-weight: bold;
     }
+
     td.break {
       background-color: #f0e68c;
       color: #888;
       pointer-events: none;
     }
-    .slot, .full {
+
+    .slot,
+    .full {
       font-weight: bold;
     }
+
     .container {
       width: 90%;
       max-width: 1100px;
@@ -65,117 +78,192 @@
     }
   </style>
 </head>
+
 <body>
 
-<div class="container">
-  <h2>选课时间表（剩余名额）</h2>
+  <div class="container">
+    <h2>选课时间表（剩余名额）</h2>
 
-  <table id="schedule">
-    <thead>
-      <tr>
-        <th>时间</th>
-        <th>3/31</th>
-        <th>4/1</th>
-        <th>4/2</th>
-        <th>4/3</th>
-        <th>4/4</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>9:00 - 9:30</td>
-        <td class="slot" data-time="9:00 - 9:30" data-date="3/31" onclick="goToEnrollPage('9:00 - 9:30', '3/31')">2</td>
-        <td class="slot" data-time="9:00 - 9:30" data-date="4/1" onclick="goToEnrollPage('9:00 - 9:30', '4/1')">2</td>
-        <td class="slot" data-time="9:00 - 9:30" data-date="4/2" onclick="goToEnrollPage('9:00 - 9:30', '4/2')">2</td>
-        <td class="slot" data-time="9:00 - 9:30" data-date="4/3" onclick="goToEnrollPage('9:00 - 9:30', '4/3')">2</td>
-        <td class="slot" data-time="9:00 - 9:30" data-date="4/4" onclick="goToEnrollPage('9:00 - 9:30', '4/4')">2</td>
-      </tr>
-      <tr>
-        <td>9:30 - 10:00</td>
-        <td class="slot" data-time="9:30 - 10:00" data-date="3/31" onclick="goToEnrollPage('9:30 - 10:00', '3/31')">2</td>
-        <td class="slot" data-time="9:30 - 10:00" data-date="4/1" onclick="goToEnrollPage('9:30 - 10:00', '4/1')">2</td>
-        <td class="slot" data-time="9:30 - 10:00" data-date="4/2" onclick="goToEnrollPage('9:30 - 10:00', '4/2')">2</td>
-        <td class="slot" data-time="9:30 - 10:00" data-date="4/3" onclick="goToEnrollPage('9:30 - 10:00', '4/3')">2</td>
-        <td class="slot" data-time="9:30 - 10:00" data-date="4/4" onclick="goToEnrollPage('9:30 - 10:00', '4/4')">2</td>
-      </tr>
-      <tr>
-        <td>12:00 - 13:00</td>
-        <td class="break" colspan="5">午休，不能选课</td>
-      </tr>
-      <tr>
-        <td>13:00 - 13:30</td>
-        <td class="slot" data-time="13:00 - 13:30" data-date="3/31" onclick="goToEnrollPage('13:00 - 13:30', '3/31')">2</td>
-        <td class="slot" data-time="13:00 - 13:30" data-date="4/1" onclick="goToEnrollPage('13:00 - 13:30', '4/1')">2</td>
-        <td class="slot" data-time="13:00 - 13:30" data-date="4/2" onclick="goToEnrollPage('13:00 - 13:30', '4/2')">2</td>
-        <td class="slot" data-time="13:00 - 13:30" data-date="4/3" onclick="goToEnrollPage('13:00 - 13:30', '4/3')">2</td>
-        <td class="slot" data-time="13:00 - 13:30" data-date="4/4" onclick="goToEnrollPage('13:00 - 13:30', '4/4')">2</td>
-      </tr>
-      <tr>
-        <td>13:30 - 14:00</td>
-        <td class="slot" data-time="13:30 - 14:00" data-date="3/31" onclick="goToEnrollPage('13:30 - 14:00', '3/31')">2</td>
-        <td class="slot" data-time="13:30 - 14:00" data-date="4/1" onclick="goToEnrollPage('13:30 - 14:00', '4/1')">2</td>
-        <td class="slot" data-time="13:30 - 14:00" data-date="4/2" onclick="goToEnrollPage('13:30 - 14:00', '4/2')">2</td>
-        <td class="slot" data-time="13:30 - 14:00" data-date="4/3" onclick="goToEnrollPage('13:30 - 14:00', '4/3')">2</td>
-        <td class="slot" data-time="13:30 - 14:00" data-date="4/4" onclick="goToEnrollPage('13:30 - 14:00', '4/4')">2</td>
-      </tr>
-    </tbody>
-  </table>
-</div>
+    <table id="schedule">
+      <thead>
+        <tr>
+          <th>时间</th>
+          <th>3/31</th>
+          <th>4/1</th>
+          <th>4/2</th>
+          <th>4/3</th>
+          <th>4/4</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>9:00 - 9:30</td>
+          <td class="slot" data-time="9:00 - 9:30" data-date="3/31" onclick="goToEnrollPage('9:00 - 9:30', '3/31')">2
+          </td>
+          <td class="slot" data-time="9:00 - 9:30" data-date="4/1" onclick="goToEnrollPage('9:00 - 9:30', '4/1')">2</td>
+          <td class="slot" data-time="9:00 - 9:30" data-date="4/2" onclick="goToEnrollPage('9:00 - 9:30', '4/2')">2</td>
+          <td class="slot" data-time="9:00 - 9:30" data-date="4/3" onclick="goToEnrollPage('9:00 - 9:30', '4/3')">2</td>
+          <td class="slot" data-time="9:00 - 9:30" data-date="4/4" onclick="goToEnrollPage('9:00 - 9:30', '4/4')">2</td>
+        </tr>
+        <tr>
+          <td>9:30 - 10:00</td>
+          <td class="slot" data-time="9:30 - 10:00" data-date="3/31" onclick="goToEnrollPage('9:30 - 10:00', '3/31')">2
+          </td>
+          <td class="slot" data-time="9:30 - 10:00" data-date="4/1" onclick="goToEnrollPage('9:30 - 10:00', '4/1')">2
+          </td>
+          <td class="slot" data-time="9:30 - 10:00" data-date="4/2" onclick="goToEnrollPage('9:30 - 10:00', '4/2')">2
+          </td>
+          <td class="slot" data-time="9:30 - 10:00" data-date="4/3" onclick="goToEnrollPage('9:30 - 10:00', '4/3')">2
+          </td>
+          <td class="slot" data-time="9:30 - 10:00" data-date="4/4" onclick="goToEnrollPage('9:30 - 10:00', '4/4')">2
+          </td>
+        </tr>
+        <tr>
+          <td>12:00 - 13:00</td>
+          <td class="break" colspan="5">午休，不能选课</td>
+        </tr>
+        <tr>
+          <td>13:00 - 13:30</td>
+          <td class="slot" data-time="13:00 - 13:30" data-date="3/31" onclick="goToEnrollPage('13:00 - 13:30', '3/31')">
+            2</td>
+          <td class="slot" data-time="13:00 - 13:30" data-date="4/1" onclick="goToEnrollPage('13:00 - 13:30', '4/1')">2
+          </td>
+          <td class="slot" data-time="13:00 - 13:30" data-date="4/2" onclick="goToEnrollPage('13:00 - 13:30', '4/2')">2
+          </td>
+          <td class="slot" data-time="13:00 - 13:30" data-date="4/3" onclick="goToEnrollPage('13:00 - 13:30', '4/3')">2
+          </td>
+          <td class="slot" data-time="13:00 - 13:30" data-date="4/4" onclick="goToEnrollPage('13:00 - 13:30', '4/4')">2
+          </td>
+        </tr>
+        <tr>
+          <td>13:30 - 14:00</td>
+          <td class="slot" data-time="13:30 - 14:00" data-date="3/31" onclick="goToEnrollPage('13:30 - 14:00', '3/31')">
+            2</td>
+          <td class="slot" data-time="13:30 - 14:00" data-date="4/1" onclick="goToEnrollPage('13:30 - 14:00', '4/1')">2
+          </td>
+          <td class="slot" data-time="13:30 - 14:00" data-date="4/2" onclick="goToEnrollPage('13:30 - 14:00', '4/2')">2
+          </td>
+          <td class="slot" data-time="13:30 - 14:00" data-date="4/3" onclick="goToEnrollPage('13:30 - 14:00', '4/3')">2
+          </td>
+          <td class="slot" data-time="13:30 - 14:00" data-date="4/4" onclick="goToEnrollPage('13:30 - 14:00', '4/4')">2
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 
-<script src="https://unpkg.com/@supabase/supabase-js@2"></script>
-<script>
-  const SUPABASE_URL = "https://iodijnhbxihastuknqky.supabase.co";
-  const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlvZGlqbmhieGloYXN0dWtucWt5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njk4NjgyNTIsImV4cCI6MjA4NTQ0NDI1Mn0.PTG1s0Zv14VX-yfrZNmJqyu-R7wlvJl3_YYcq40g6Y4";
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-  const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  <script>
+    const SUPABASE_URL = "https://iodijnhbxihastuknqky.supabase.co";
+    const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlvZGlqbmhieGloYXN0dWtucWt5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njk4NjgyNTIsImV4cCI6MjA4NTQ0NDI1Mn0.PTG1s0Zv14VX-yfrZNmJqyu-R7wlvJl3_YYcq40g6Y4";
 
-  // 跳转到enroll.html并传递时间段和日期
-  function goToEnrollPage(time, date) {
-    const remaining = document.querySelector(`td[data-time="${time}"][data-date="${date}"]`).textContent;
-    if (remaining !== "已满员") {
-      window.location.href = `enroll.html?time=${time}&date=${date}`;
-    } else {
-      alert("该时间段已满，请选择其他时间！");
-    }
-  }
-
-  async function loadSchedule() {
-    const slots = document.querySelectorAll(".slot");
-
-    for (let cell of slots) {
-      const time = cell.getAttribute("data-time");
-      const date = cell.getAttribute("data-date");
-
-      const { count, error } = await supabaseClient
-        .from("enrollments")
-        .select("*", { count: "exact" })
-        .eq("time_slot", time)
-        .eq("date", date);
-
-      if (error) {
-        console.error("查询出错：", error.message);
-      } else {
-        let remaining = 2;
-
-        if (count > 0) {
-          remaining = 2 - count;
-        }
-
-        console.log(`时间段: ${time} 日期: ${date} 剩余名额: ${remaining}`);
-
-        cell.textContent = remaining;
-
-        if (remaining <= 0) {
-          cell.textContent = "已满员";
-          cell.classList.add("full");
-          cell.classList.remove("slot");
+    const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    let flag = false;
+    // 跳转到enroll.html并传递时间段和日期
+    function goToEnrollPage(time, date) {
+      if (flag) {
+        flag = false;
+        const remaining = document.querySelector(`td[data-time="${time}"][data-date="${date}"]`).textContent;
+        if (remaining !== "已满员") {
+          window.location.href = `enroll.html?time=${time}&date=${date}`;
+        } else {
+          alert("该时间段已满，请选择其他时间！");
         }
       }
     }
-  }
 
-  loadSchedule();
-</script>
+    /**
+     * 按两个字段分组并统计数量
+     * @param {Array} list - 原始数组
+     * @param {String} key1 - 第一个分组字段
+     * @param {String} key2 - 第二个分组字段
+     * @returns {Array} 分组后的数组（包含两个字段 + count）
+   */
+    function groupByTwoKeys(list, key1, key2) {
+      // 1. 创建临时映射对象，存储分组信息
+      const groupMap = {};
+
+      // 2. 遍历原始数组，统计分组
+      list.forEach(item => {
+        // 生成唯一分组键（拼接两个字段，避免重复）
+        const groupKey = `${item[key1]}_${item[key2]}`;
+
+        if (!groupMap[groupKey]) {
+          // 分组不存在时，初始化（包含两个字段 + 计数=1）
+          groupMap[groupKey] = {
+            [key1]: item[key1],
+            [key2]: item[key2],
+            count: 1
+          };
+        } else {
+          // 分组已存在，计数+1
+          groupMap[groupKey].count++;
+        }
+      });
+
+      // 3. 将映射对象转为数组，返回最终结果
+      return Object.values(groupMap);
+    }
+
+    /**
+     * 设置课程状态
+     * @param {Array} list - 原始数组
+   */
+    function updateCourse(list) {
+      const slots = document.querySelectorAll(".slot");
+
+      for (let cell of slots) {
+        const time = cell.getAttribute("data-time");
+        const date = cell.getAttribute("data-date");
+        for (let item of list) {
+          if (item.time_slot == time && item.date == date) {
+            let remaining = 2;
+            if (item.count > 0) {
+              remaining = 2 - item.count;
+            }
+
+            console.log(`时间段: ${time} 日期: ${date} 剩余名额: ${remaining}`);
+
+            cell.textContent = remaining;
+
+            if (remaining <= 0) {
+              cell.textContent = "已满员";
+              cell.classList.add("full");
+              cell.classList.remove("slot");
+            }
+            break;
+          }
+        }
+      }
+    }
+
+    async function loadSchedule() {
+      const firstRowFirstCol = document.querySelector('table tr:first-child th:nth-child(2)')?.textContent.trim() || '';
+      const firstRowLastCol = document.querySelector('table tr:first-child th:last-child')?.textContent.trim() || '';
+
+      const { data, error } = await supabaseClient
+        .from("enrollments")
+        .select('time_slot,date')
+        .gte('date', firstRowFirstCol)
+        .lte('date', firstRowLastCol)
+        .order('date', { ascending: true })
+        .order('time_slot', { ascending: true })
+
+      if (error) {
+        console.error("查询出错：", error.message);
+        return;
+      }
+      // 调用函数：按 time_slot 和 date 分组
+      const groupedResult = groupByTwoKeys(data, "time_slot", "date");
+      console.log("分组结果：", groupedResult);
+      updateCourse(groupedResult);
+      flag = true;
+    }
+    loadSchedule();
+
+  </script>
 
 </body>
+
 </html>
