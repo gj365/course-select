@@ -14,7 +14,8 @@
     h2 {
       text-align: center;
       color: #444;
-      margin-top: 20px;
+      margin-top: 30px;
+      font-size: 24px;
     }
     table {
       border-collapse: collapse;
@@ -47,6 +48,7 @@
       background-color: #f8d7da;
       color: #888;
       cursor: not-allowed;
+      font-weight: bold;
     }
     td.break {
       background-color: #f0e68c;
@@ -60,9 +62,6 @@
       width: 90%;
       max-width: 1100px;
       margin: 0 auto;
-    }
-    .date-column {
-      font-weight: bold;
     }
   </style>
 </head>
@@ -85,68 +84,92 @@
     <tbody>
       <tr>
         <td>9:00 - 9:30</td>
-        <td class="slot" data-time="9:00 - 9:30" data-date="3/31">2</td>
-        <td class="slot" data-time="9:00 - 9:30" data-date="4/1">2</td>
-        <td class="slot" data-time="9:00 - 9:30" data-date="4/2">2</td>
-        <td class="slot" data-time="9:00 - 9:30" data-date="4/3">2</td>
-        <td class="slot" data-time="9:00 - 9:30" data-date="4/4">2</td>
+        <td class="slot" data-time="9:00 - 9:30" data-date="3/31" onclick="goToEnrollPage('9:00 - 9:30', '3/31')">2</td>
+        <td class="slot" data-time="9:00 - 9:30" data-date="4/1" onclick="goToEnrollPage('9:00 - 9:30', '4/1')">2</td>
+        <td class="slot" data-time="9:00 - 9:30" data-date="4/2" onclick="goToEnrollPage('9:00 - 9:30', '4/2')">2</td>
+        <td class="slot" data-time="9:00 - 9:30" data-date="4/3" onclick="goToEnrollPage('9:00 - 9:30', '4/3')">2</td>
+        <td class="slot" data-time="9:00 - 9:30" data-date="4/4" onclick="goToEnrollPage('9:00 - 9:30', '4/4')">2</td>
       </tr>
-      <!-- More time slots here -->
       <tr>
         <td>9:30 - 10:00</td>
-        <td class="slot" data-time="9:30 - 10:00" data-date="3/31">2</td>
-        <td class="slot" data-time="9:30 - 10:00" data-date="4/1">2</td>
-        <td class="slot" data-time="9:30 - 10:00" data-date="4/2">2</td>
-        <td class="slot" data-time="9:30 - 10:00" data-date="4/3">2</td>
-        <td class="slot" data-time="9:30 - 10:00" data-date="4/4">2</td>
+        <td class="slot" data-time="9:30 - 10:00" data-date="3/31" onclick="goToEnrollPage('9:30 - 10:00', '3/31')">2</td>
+        <td class="slot" data-time="9:30 - 10:00" data-date="4/1" onclick="goToEnrollPage('9:30 - 10:00', '4/1')">2</td>
+        <td class="slot" data-time="9:30 - 10:00" data-date="4/2" onclick="goToEnrollPage('9:30 - 10:00', '4/2')">2</td>
+        <td class="slot" data-time="9:30 - 10:00" data-date="4/3" onclick="goToEnrollPage('9:30 - 10:00', '4/3')">2</td>
+        <td class="slot" data-time="9:30 - 10:00" data-date="4/4" onclick="goToEnrollPage('9:30 - 10:00', '4/4')">2</td>
       </tr>
       <tr>
         <td>12:00 - 13:00</td>
         <td class="break" colspan="5">午休，不能选课</td>
       </tr>
-      <!-- More time slots here -->
+      <tr>
+        <td>13:00 - 13:30</td>
+        <td class="slot" data-time="13:00 - 13:30" data-date="3/31" onclick="goToEnrollPage('13:00 - 13:30', '3/31')">2</td>
+        <td class="slot" data-time="13:00 - 13:30" data-date="4/1" onclick="goToEnrollPage('13:00 - 13:30', '4/1')">2</td>
+        <td class="slot" data-time="13:00 - 13:30" data-date="4/2" onclick="goToEnrollPage('13:00 - 13:30', '4/2')">2</td>
+        <td class="slot" data-time="13:00 - 13:30" data-date="4/3" onclick="goToEnrollPage('13:00 - 13:30', '4/3')">2</td>
+        <td class="slot" data-time="13:00 - 13:30" data-date="4/4" onclick="goToEnrollPage('13:00 - 13:30', '4/4')">2</td>
+      </tr>
+      <tr>
+        <td>13:30 - 14:00</td>
+        <td class="slot" data-time="13:30 - 14:00" data-date="3/31" onclick="goToEnrollPage('13:30 - 14:00', '3/31')">2</td>
+        <td class="slot" data-time="13:30 - 14:00" data-date="4/1" onclick="goToEnrollPage('13:30 - 14:00', '4/1')">2</td>
+        <td class="slot" data-time="13:30 - 14:00" data-date="4/2" onclick="goToEnrollPage('13:30 - 14:00', '4/2')">2</td>
+        <td class="slot" data-time="13:30 - 14:00" data-date="4/3" onclick="goToEnrollPage('13:30 - 14:00', '4/3')">2</td>
+        <td class="slot" data-time="13:30 - 14:00" data-date="4/4" onclick="goToEnrollPage('13:30 - 14:00', '4/4')">2</td>
+      </tr>
     </tbody>
   </table>
 </div>
 
 <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
 <script>
-  const supabase = window.supabase.createClient(
-    "https://iodijnhbxihastuknqky.supabase.co",
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlvZGlqbmhieGloYXN0dWtucWt5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njk4NjgyNTIsImV4cCI6MjA4NTQ0NDI1Mn0.PTG1s0Zv14VX-yfrZNmJqyu-R7wlvJl3_YYcq40g6Y4"
-  );
+  const SUPABASE_URL = "https://iodijnhbxihastuknqky.supabase.co";
+  const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlvZGlqbmhieGloYXN0dWtucWt5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njk4NjgyNTIsImV4cCI6MjA4NTQ0NDI1Mn0.PTG1s0Zv14VX-yfrZNmJqyu-R7wlvJl3_YYcq40g6Y4";
+
+  const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+  // 跳转到enroll.html并传递时间段和日期
+  function goToEnrollPage(time, date) {
+    const remaining = document.querySelector(`td[data-time="${time}"][data-date="${date}"]`).textContent;
+    if (remaining !== "已满员") {
+      window.location.href = `enroll.html?time=${time}&date=${date}`;
+    } else {
+      alert("该时间段已满，请选择其他时间！");
+    }
+  }
 
   async function loadSchedule() {
     const slots = document.querySelectorAll(".slot");
+
     for (let cell of slots) {
       const time = cell.getAttribute("data-time");
       const date = cell.getAttribute("data-date");
 
-      const { count, error } = await supabase
+      const { count, error } = await supabaseClient
         .from("enrollments")
         .select("*", { count: "exact" })
         .eq("time_slot", time)
         .eq("date", date);
 
       if (error) {
-        console.error("查询错误：", error.message);
-        continue;
-      }
+        console.error("查询出错：", error.message);
+      } else {
+        let remaining = 2;
 
-      let remaining = 2;  // 默认剩余名额
-      if (count > 0) {
-        remaining = 2 - count;
-      }
+        if (count > 0) {
+          remaining = 2 - count;
+        }
 
-      // 更新页面显示
-      cell.textContent = remaining;
-      cell.setAttribute("data-remaining", remaining);
+        console.log(`时间段: ${time} 日期: ${date} 剩余名额: ${remaining}`);
 
-      // 名额已满
-      if (remaining === 0) {
-        cell.textContent = "已满员";
-        cell.classList.add("full");
-        cell.classList.remove("slot");
+        cell.textContent = remaining;
+
+        if (remaining <= 0) {
+          cell.textContent = "已满员";
+          cell.classList.add("full");
+          cell.classList.remove("slot");
+        }
       }
     }
   }
