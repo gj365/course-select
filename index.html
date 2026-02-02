@@ -114,20 +114,14 @@
       const time = cell.getAttribute("data-time");
       const date = cell.getAttribute("data-date");
 
-//const { count, error } = await supabaseClient
-//  .from("enrollments")
- // .select("count", { count: "exact" })  // 只获取记录数
-//  .eq("time_slot", "9:00 - 9:30")
-//  .eq("date", "3/31")
-//  ;
-const { count, error } = await supabaseClient
+const { data, error } = await supabase
   .from("enrollments")
-  .select("*", { count: "exact" });  // 只获取记录数
+  .select("*");
 
 if (error) {
-  console.error("查询出错：", error.message);  // 输出错误信息
+  console.error("查询出错：", error.message);
 } else {
-  console.log("表中的记录数：", count);  // 输出记录数
+  console.log("查询结果：", data);  // 查看查询结果
 }
 
       // 默认剩余名额为2
@@ -158,6 +152,7 @@ if (error) {
 
 </body>
 </html>
+
 
 
 
