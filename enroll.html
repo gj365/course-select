@@ -2,80 +2,66 @@
 <html lang="zh">
 <head>
   <meta charset="UTF-8">
-  <title>选课确认</title>
+  <title>选课详情</title>
   <style>
     body {
       font-family: system-ui, -apple-system, BlinkMacSystemFont;
+    }
+    .container {
+      margin-top: 20px;
       padding: 20px;
+      border: 1px solid #ccc;
+      max-width: 600px;
+      margin: 0 auto;
     }
-    label {
-      display: block;
-      margin-top: 10px;
+    h2 {
+      text-align: center;
     }
-    input {
-      padding: 5px;
-      margin-top: 5px;
-      width: 100%;
-      max-width: 300px;
+    .details {
+      margin-bottom: 20px;
     }
-    button {
-      margin-top: 15px;
+    .btn {
+      display: inline-block;
       padding: 10px 20px;
-      cursor: pointer;
-      font-size: 16px;
-    }
-    .back-btn {
-      background-color: #f0f0f0;
-    }
-    .confirm-btn {
-      background-color: #4CAF50;
+      background: #4CAF50;
       color: white;
+      text-decoration: none;
+      border-radius: 5px;
+    }
+    .btn.cancel {
+      background: #f44336;
     }
   </style>
 </head>
 <body>
 
-<h2>选课确认</h2>
+<div class="container">
+  <h2>选课详情</h2>
+  
+  <div class="details">
+    <p><strong>时间段：</strong><span id="time-slot"></span></p>
+    <p><strong>日期：</strong><span id="date"></span></p>
+    <p><strong>姓名：</strong><span id="name"></span></p>
+    <p><strong>假名：</strong><span id="kana"></span></p>
+    <p><strong>邮箱：</strong><span id="email"></span></p>
+  </div>
 
-<p><strong>已选择时间段：</strong><span id="selected-time"></span></p>
-
-<form id="enroll-form">
-  <label for="name">姓名：</label>
-  <input type="text" id="name" name="name" required />
-
-  <label for="kana">假名：</label>
-  <input type="text" id="kana" name="kana" required />
-
-  <label for="email">邮箱：</label>
-  <input type="email" id="email" name="email" required />
-
-  <button type="button" class="confirm-btn" onclick="submitForm()">确认选课</button>
-  <button type="button" class="back-btn" onclick="window.history.back()">返回</button>
-</form>
+  <a href="index.html" class="btn cancel">返回</a>
+  <a href="#" class="btn">确认选课</a>
+</div>
 
 <script>
-  // 从 URL 获取参数（时间段和日期）
+  // 从 URL 中获取时间段和日期信息
   const urlParams = new URLSearchParams(window.location.search);
-  const time = urlParams.get('time');
+  const timeSlot = urlParams.get('time');
   const date = urlParams.get('date');
 
-  // 显示选择的时间段
-  document.getElementById('selected-time').textContent = `${date} ${time}`;
+  // 获取选课详情
+  document.getElementById("time-slot").textContent = timeSlot;
+  document.getElementById("date").textContent = date;
 
-  // 提交表单函数
-  function submitForm() {
-    const name = document.getElementById('name').value;
-    const kana = document.getElementById('kana').value;
-    const email = document.getElementById('email').value;
-
-    if (name && kana && email) {
-      // 这里可以将数据发送到后端或数据库，模拟成功
-      alert('选课成功！');
-      window.location.href = 'index.html'; // 跳回主页面
-    } else {
-      alert('请填写完整信息！');
-    }
-  }
+  // 查询选课记录（假设获取当前用户的选课信息）
+  // 这里可以根据需求查询数据库来填充姓名、假名和邮箱
 </script>
 
 </body>
