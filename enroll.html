@@ -2,105 +2,134 @@
 <html lang="zh">
 <head>
   <meta charset="UTF-8">
-  <title>选课详情</title>
+  <title>选课确认</title>
   <style>
     body {
-      font-family: system-ui, -apple-system, BlinkMacSystemFont;
+      font-family: 'Arial', sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f7f7f7;
+      color: #333;
     }
     .container {
-      margin-top: 20px;
-      padding: 20px;
-      border: 1px solid #ccc;
+      width: 90%;
       max-width: 600px;
-      margin: 0 auto;
+      margin: 50px auto;
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     }
     h2 {
       text-align: center;
+      color: #444;
     }
-    .details {
-      margin-bottom: 20px;
+    label {
+      display: block;
+      margin-top: 10px;
+      font-size: 14px;
     }
-    .btn {
-      display: inline-block;
-      padding: 10px 20px;
-      background: #4CAF50;
+    input {
+      width: 100%;
+      padding: 10px;
+      margin: 8px 0;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
+    button {
+      width: 100%;
+      padding: 12px;
+      background-color: #4CAF50;
       color: white;
-      text-decoration: none;
-      border-radius: 5px;
+      border: none;
+      border-radius: 4px;
+      font-size: 16px;
+      cursor: pointer;
+      margin-top: 20px;
+      transition: background-color 0.3s ease;
     }
-    .btn.cancel {
-      background: #f44336;
+    button:hover {
+      background-color: #45a049;
+    }
+    .back-button {
+      width: 100%;
+      padding: 12px;
+      background-color: #f44336;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      font-size: 16px;
+      margin-top: 10px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    .back-button:hover {
+      background-color: #e53935;
     }
   </style>
 </head>
 <body>
 
 <div class="container">
-  <h2>选课详情</h2>
-  
-  <div class="details">
-    <p><strong>时间段：</strong><span id="time-slot"></span></p>
-    <p><strong>日期：</strong><span id="date"></span></p>
-    <p><strong>姓名：</strong><input type="text" id="name" placeholder="请输入姓名"></p>
-    <p><strong>假名：</strong><input type="text" id="kana" placeholder="请输入假名"></p>
-    <p><strong>邮箱：</strong><input type="email" id="email" placeholder="请输入邮箱"></p>
-  </div>
+  <h2>填写选课信息</h2>
+  <form id="enrollForm">
+    <label for="name">姓名</label>
+    <input type="text" id="name" placeholder="请输入姓名" required />
 
-  <a href="index.html" class="btn cancel">返回</a>
-  <button id="confirm" class="btn">确认选课</button>
+    <label for="kana">假名</label>
+    <input type="text" id="kana" placeholder="请输入假名" required />
+
+    <label for="email">邮箱</label>
+    <input type="email" id="email" placeholder="请输入邮箱" required />
+
+    <button type="submit">确认选课</button>
+    <button type="button" class="back-button" onclick="window.history.back()">返回</button>
+  </form>
 </div>
 
 <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
 <script>
-  // 创建 Supabase 客户端
-  const SUPABASE_URL = "https://iodijnhbxihastuknqky.supabase.co";
-  const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlvZGlqbmhieGloYXN0dWtucWt5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njk4NjgyNTIsImV4cCI6MjA4NTQ0NDI1Mn0.PTG1s0Zv14VX-yfrZNmJqyu-R7wlvJl3_YYcq40g6Y4";
+  const supabase = window.supabase.createClient(
+    "https://iodijnhbxihastuknqky.supabase.co",
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlvZGlqbmhieGloYXN0dWtucWt5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njk4NjgyNTIsImV4cCI6MjA4NTQ0NDI1Mn0.PTG1s0Zv14VX-yfrZNmJqyu-R7wlvJl3_YYcq40g6Y4"
+  );
 
-  const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  document.getElementById("enrollForm").addEventListener("submit", async function(event) {
+    event.preventDefault();
 
-  // 从 URL 中获取时间段和日期信息
-  const urlParams = new URLSearchParams(window.location.search);
-  const timeSlot = urlParams.get('time');
-  const date = urlParams.get('date');
-
-  // 获取选课详情
-  document.getElementById("time-slot").textContent = timeSlot;
-  document.getElementById("date").textContent = date;
-
-  // 点击确认选课按钮时执行
-  document.getElementById("confirm").onclick = async () => {
     const name = document.getElementById("name").value;
     const kana = document.getElementById("kana").value;
     const email = document.getElementById("email").value;
+    const time_slot = new URLSearchParams(window.location.search).get("time");
+    const date = new URLSearchParams(window.location.search).get("date");
 
-    if (!name || !kana || !email) {
-      alert("请填写所有信息！");
+    // 检查是否已满
+    const { count, error } = await supabase
+      .from("enrollments")
+      .select("*", { count: "exact" })
+      .eq("time_slot", time_slot)
+      .eq("date", date);
+
+    if (count >= 2) {
+      alert("该时间段已满，请选择其他时间。");
+      window.location.href = "/";  // 跳转到首页
       return;
     }
 
-const { data, error } = await supabaseClient
-  .from("enrollments")
-  .insert([
-    { 
-      time_slot: timeSlot, 
-      date: date, 
-      name: name, 
-      kana: kana, 
-      email: email 
+    const { error: insertError } = await supabase
+      .from("enrollments")
+      .insert([{ time_slot, date, name, kana, email }]);
+
+    if (insertError) {
+      alert("选课失败: " + insertError.message);
+    } else {
+      alert("选课成功！");
+      window.location.href = "/";  // 选课成功后跳转到首页
     }
-  ]);
-
-if (error) {
-  console.error("插入失败:", error.message);
-  alert("选课失败，请稍后再试！");
-} else {
-  alert("选课成功！");
-  window.location.href = "index.html"; // 返回到首页
-}
-
-  };
+  });
 </script>
 
 </body>
 </html>
-
