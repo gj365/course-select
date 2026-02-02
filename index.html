@@ -62,34 +62,7 @@
       <td class="slot" data-time="9:00 - 9:30" data-date="4/3">2</td>
       <td class="slot" data-time="9:00 - 9:30" data-date="4/4">2</td>
     </tr>
-    <tr>
-      <td>9:30 - 10:00</td>
-      <td class="slot" data-time="9:30 - 10:00" data-date="3/31">2</td>
-      <td class="slot" data-time="9:30 - 10:00" data-date="4/1">2</td>
-      <td class="slot" data-time="9:30 - 10:00" data-date="4/2">2</td>
-      <td class="slot" data-time="9:30 - 10:00" data-date="4/3">2</td>
-      <td class="slot" data-time="9:30 - 10:00" data-date="4/4">2</td>
-    </tr>
-    <tr>
-      <td>12:00 - 13:00</td>
-      <td class="break" colspan="5">午休，不能选课</td>
-    </tr>
-    <tr>
-      <td>13:00 - 13:30</td>
-      <td class="slot" data-time="13:00 - 13:30" data-date="3/31">2</td>
-      <td class="slot" data-time="13:00 - 13:30" data-date="4/1">2</td>
-      <td class="slot" data-time="13:00 - 13:30" data-date="4/2">2</td>
-      <td class="slot" data-time="13:00 - 13:30" data-date="4/3">2</td>
-      <td class="slot" data-time="13:00 - 13:30" data-date="4/4">2</td>
-    </tr>
-    <tr>
-      <td>13:30 - 14:00</td>
-      <td class="slot" data-time="13:30 - 14:00" data-date="3/31">2</td>
-      <td class="slot" data-time="13:30 - 14:00" data-date="4/1">2</td>
-      <td class="slot" data-time="13:30 - 14:00" data-date="4/2">2</td>
-      <td class="slot" data-time="13:30 - 14:00" data-date="4/3">2</td>
-      <td class="slot" data-time="13:30 - 14:00" data-date="4/4">2</td>
-    </tr>
+    <!-- 更多时间段 -->
   </tbody>
 </table>
 
@@ -98,13 +71,11 @@
   // 创建 Supabase 客户端
   const SUPABASE_URL = "https://iodijnhbxihastuknqky.supabase.co";
   const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlvZGlqbmhieGloYXN0dWtucWt5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njk4NjgyNTIsImV4cCI6MjA4NTQ0NDI1Mn0.PTG1s0Zv14VX-yfrZNmJqyu-R7wlvJl3_YYcq40g6Y4";
-
+  
   const supabaseClient = window.supabase.createClient(
     SUPABASE_URL,
     SUPABASE_ANON_KEY
   );
-
-console.log(supabaseClient);
 
   // 从数据库获取课程名额数据并更新页面
   async function loadSchedule() {
@@ -114,17 +85,17 @@ console.log(supabaseClient);
       const time = cell.getAttribute("data-time");
       const date = cell.getAttribute("data-date");
 
-const { count, error } = await supabaseClient
-  .from("enrollments")
-  .select("*", { count: "exact" })
-    .eq("time_slot", time)
-  .eq("date", date);
+      const { count, error } = await supabaseClient
+        .from("enrollments")
+        .select("*", { count: "exact" })
+        .eq("time_slot", time)
+        .eq("date", date);
 
-if (error) {
-  console.error("查询出错：", error.message);
-} else {
-  console.log("查询结果：", count);  // 查看查询结果
-}
+      if (error) {
+        console.error("查询出错：", error.message);
+      } else {
+        console.log("查询结果：", count);  // 查看查询结果
+      }
 
       // 默认剩余名额为2
       let remaining = 2;
@@ -134,16 +105,19 @@ if (error) {
         remaining = 2 - count;
       }
 
-      console.log(`时间段: ${time} 日期: ${date} 剩余名额: ${remaining}`);
-
-      // 更新页面显示剩余名额
-      cell.textContent = remaining;
-      cell.setAttribute("data-remaining", remaining);
+      // 更新页面显示剩余名额，作为链接
+      const link = document.createElement("a");
+      link.href = `enroll.html?time=${time}&date=${date}`;
+      link.textContent = remaining;
+      
+      cell.textContent = ''; // 清空单元格
+      cell.appendChild(link); // 插入链接
 
       // 如果名额已满，禁用该时间段
       if (remaining === 0) {
         cell.classList.add("full");
         cell.classList.remove("slot");
+        link.style.pointerEvents = "none";  // 禁用点击
       }
     }
   }
@@ -154,21 +128,3 @@ if (error) {
 
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
