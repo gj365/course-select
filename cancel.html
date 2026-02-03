@@ -125,10 +125,7 @@
   const SUPABASE_URL = "https://iodijnhbxihastuknqky.supabase.co";
   const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlvZGlqbmhieGloYXN0dWtucWt5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njk4NjgyNTIsImV4cCI6MjA4NTQ0NDI1Mn0.PTG1s0Zv14VX-yfrZNmJqyu-R7wlvJl3_YYcq40g6Y4";
 
-  const supabase = window.supabase.createClient(
-    SUPABASE_URL,
-    SUPABASE_ANON_KEY
-  );
+  const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
   const table = document.getElementById("result-table");
   const tbody = table.querySelector("tbody");
@@ -147,7 +144,7 @@
     emptyDiv.textContent = "";
     table.style.display = "none";
 
-    const { data, error } = await supabase
+    const { data, error } = await supabaseClient
       .from("enrollments")
       .select("*")
       .eq("email", email);
@@ -216,4 +213,5 @@
 
 </body>
 </html>
+
 
