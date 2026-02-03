@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <title>选课取消</title>
+  <style>
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont;
+      background: #f7f7f7;
+      margin: 0;
+      padding: 30px;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      background: #fff;
+      padding: 24px;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0,0,0,.08);
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .search-box {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    input[type="email"] {
+      flex: 1;
+      padding: 10px;
+      font-size: 14px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+
+    button {
+      padding: 10px 18px;
+      border: none;
+      border-radius: 6px;
+      background: #4CAF50;
+      color: #fff;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    button.cancel {
+      background: #f44336;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 15px;
+    }
+
+    th, td {
+      border: 1px solid #ddd;
+      padding: 10px;
+      text-align: center;
+      font-size: 14px;
+    }
+
+    th {
+      background: #f0f0f0;
+    }
+
+    .empty {
+      text-align: center;
+      color: #888;
+      margin-top: 20px;
+    }
+
+    .actions {
+      margin-top: 20px;
+      text-align: center;
+    }
+
+    a {
+      color: #4CAF50;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h2>选课取消</h2>
+
+  <!-- 搜索框 -->
+  <div class="search-box">
+    <input type="email" id="email" placeholder="请输入报名时使用的邮箱">
+    <button id="search">检索</button>
+  </div>
+
+  <!-- 结果表格 -->
+  <table id="result-table" style="display:none;">
+    <thead>
+      <tr>
+        <th>日期</th>
+        <th>时间段</th>
+        <th>姓名</th>
+        <th>假名</th>
+        <th>邮箱</th>
+        <th>操作</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <div id="empty" class="empty"></div>
+
+  <div class="actions">
+    <a href="index.html">← 返回选课首页</a>
+  </div>
+</div>
+
+<script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+<script>
+  const SUPABASE_URL = "https://iodijnhbxihastuknqky.supabase.co";
+  const SUPABASE_ANON_KEY = "你的 anon key";
+
+  const supabase = window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_ANON_KEY
+  );
+
+  const table = document.getElementById("result-table");
+  const tbody = table.querySelector("tbody");
+  const emptyDiv = document.getElementById("empty");
+
+  // 检索
+  document.getElementById("search").onclick = async () => {
+    const email = document.getElementById("email").value.trim();
+
+    if (!email) {
+      alert("请输入邮箱");
+      return;
+    }
+
+    tbody.innerHTML = "";
+    emptyDiv.textContent = "";
+    table.style.display = "none";
+
+    const { data, error } = await supabase
+      .from("enrollments")
+      .select("*")
+      .eq("email", email);
+
+    if (error) {
+      alert("查询失败");
+      console.error(error);
+      return;
+    }
+
+    if (data.length === 0) {
+      emptyDiv.textContent = "没有找到该邮箱的选课记录";
+      return;
+    }
+
+    // 按 日期 + 时间段 排序
+    data.sort((a, b) => {
+      if (a.date !== b.date) return a.date.localeCompare(b.date);
+      return a.time_slot.localeCompare(b.time_slot);
+    });
+
+    table.style.display = "table";
+
+    data.forEach(row => {
+      const tr = document.createElement("tr");
+
+      tr.innerHTML = `
+        <td>${row.date}</td>
+        <td>${row.time_slot}</td>
+        <td>${row.name}</td>
+        <td>${row.kana}</td>
+        <td>${row.email}</td>
+        <td>
+          <button class="cancel">取消</button>
+        </td>
+      `;
+
+      tr.querySelector(".cancel").onclick = () => cancelEnrollment(row);
+
+      tbody.appendChild(tr);
+    });
+  };
+
+  // 取消选课（删除）
+  async function cancelEnrollment(row) {
+    if (!confirm(`确认取消 ${row.date} ${row.time_slot} 的选课吗？`)) {
+      return;
+    }
+
+    const { error } = await supabase
+      .from("enrollments")
+      .delete()
+      .eq("email", row.email)
+      .eq("date", row.date)
+      .eq("time_slot", row.time_slot);
+
+    if (error) {
+      alert("取消失败");
+      console.error(error);
+    } else {
+      alert("已取消选课");
+      document.getElementById("search").click(); // 重新检索
+    }
+  }
+</script>
+
+</body>
+</html>
