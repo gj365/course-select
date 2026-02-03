@@ -1,81 +1,16 @@
+<!-- enroll.html -->
 <!DOCTYPE html>
 <html lang="zh">
 <head>
   <meta charset="UTF-8">
   <title>选课详情</title>
-  <style>
-    body {
-      font-family: system-ui, -apple-system, BlinkMacSystemFont;
-      margin: 0;
-      padding: 0;
-      background-color: #f7f7f7;
-    }
-    .container {
-      margin-top: 20px;
-      padding: 20px;
-      border: 1px solid #ccc;
-      max-width: 600px;
-      margin: 0 auto;
-      background-color: #fff;
-      border-radius: 8px;
-    }
-    h2 {
-      text-align: center;
-      color: #444;
-    }
-    .details {
-      margin-bottom: 20px;
-      font-size: 16px;
-    }
-    .details p {
-      margin-bottom: 15px;
-    }
-    .details p strong {
-      color: #333;
-    }
-    input[type="text"], input[type="email"] {
-      width: 100%;
-      padding: 10px;
-      margin: 8px 0;
-      border: 1px solid #ddd;
-      border-radius: 5px;
-      font-size: 14px;
-    }
-    input[type="text"]:disabled, input[type="email"]:disabled {
-      background-color: #f5f5f5;
-    }
-    .btn {
-      display: inline-block;
-      padding: 10px 20px;
-      background: #4CAF50;
-      color: white;
-      text-decoration: none;
-      border-radius: 5px;
-      margin-top: 10px;
-      text-align: center;
-      cursor: pointer;
-    }
-    .btn.cancel {
-      background: #f44336;
-      margin-top: 20px;
-    }
-    .btn:disabled {
-      background: #ccc;
-      cursor: not-allowed;
-    }
-    .alert {
-      color: #d9534f;
-      text-align: center;
-      margin-top: 20px;
-      font-size: 16px;
-    }
-  </style>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <div class="container">
   <h2>选课详情</h2>
-  
+
   <div class="details">
     <p><strong>时间段：</strong><span id="time-slot"></span></p>
     <p><strong>日期：</strong><span id="date"></span></p>
@@ -92,46 +27,32 @@
 
 <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
 <script>
-  // 创建 Supabase 客户端
   const SUPABASE_URL = "https://iodijnhbxihastuknqky.supabase.co";
   const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlvZGlqbmhieGloYXN0dWtucWt5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njk4NjgyNTIsImV4cCI6MjA4NTQ0NDI1Mn0.PTG1s0Zv14VX-yfrZNmJqyu-R7wlvJl3_YYcq40g6Y4";
-
   const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-  // 从 URL 中获取时间段和日期信息
   const urlParams = new URLSearchParams(window.location.search);
   const timeSlot = urlParams.get('time');
   const date = urlParams.get('date');
 
-  // 获取选课详情
   document.getElementById("time-slot").textContent = timeSlot;
   document.getElementById("date").textContent = date;
 
-  // 插入前检查是否有两条记录
-  async function checkEnrollmentExistence() {
-    const { count, error } = await supabaseClient
+  async function checkDuplicateEnrollment() {
+    const { data, error } = await supabaseClient
       .from("enrollments")
-      .select("*", { count: "exact" })
-      .eq("time_slot", timeSlot)
-      .eq("date", date);
+      .select("*")
+      .eq("email", document.getElementById("email").value)
+      .eq("date", date)
+      .eq("time_slot", timeSlot);
 
-    if (error) {
-      console.error("查询失败:", error.message);
+    if (data.length > 0) {
+      alert("您已经选过该时间段的课程！");
       return false;
     }
-
-    if (count >= 2) {
-      document.getElementById("alert-message").textContent = "该时间段已满，请返回选择其他时间。";
-      setTimeout(() => {
-        window.location.href = "index.html"; // 返回首页
-      }, 3000); // 等待3秒后返回
-      return false;
-    }
-
     return true;
   }
 
-  // 点击确认选课按钮时执行
   document.getElementById("confirm").onclick = async () => {
     const name = document.getElementById("name").value;
     const kana = document.getElementById("kana").value;
@@ -142,23 +63,14 @@
       return;
     }
 
-    const canInsert = await checkEnrollmentExistence();
-    if (!canInsert) return;  // 如果已有两条记录，直接返回
+    const isNotDuplicate = await checkDuplicateEnrollment();
+    if (!isNotDuplicate) return;
 
     const { data, error } = await supabaseClient
       .from("enrollments")
-      .insert([
-        { 
-          time_slot: timeSlot, 
-          date: date, 
-          name: name, 
-          kana: kana, 
-          email: email 
-        }
-      ]);
+      .insert([{ time_slot: timeSlot, date: date, name, kana, email }]);
 
     if (error) {
-      console.error("插入失败:", error.message);
       alert("选课失败，请稍后再试！");
     } else {
       alert("选课成功！");
