@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <title>选课结果</title>
+  <style>
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont;
+      margin: 0;
+      padding: 0;
+      background-color: #f7f7f7;
+    }
+    .container {
+      margin-top: 20px;
+      padding: 20px;
+      border: 1px solid #ccc;
+      max-width: 900px;
+      margin: 0 auto;
+      background-color: #fff;
+      border-radius: 8px;
+    }
+    h2 {
+      text-align: center;
+      color: #444;
+    }
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      margin-top: 20px;
+    }
+    th, td {
+      border: 1px solid #ccc;
+      padding: 12px;
+      text-align: center;
+      font-size: 14px;
+    }
+    th {
+      background: #f4f4f4;
+    }
+    td {
+      background: #e8f5e9;
+    }
+    td.full {
+      background: #f8d7da;
+      color: #888;
+      cursor: not-allowed;
+    }
+    .btn {
+      display: inline-block;
+      padding: 10px 20px;
+      background: #4CAF50;
+      color: white;
+      text-decoration: none;
+      border-radius: 5px;
+      text-align: center;
+      cursor: pointer;
+      margin-top: 20px;
+    }
+    .btn.cancel {
+      background: #f44336;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h2>选课结果</h2>
+
+  <table id="result-table">
+    <thead>
+      <tr>
+        <th>时间段</th>
+        <th>日期</th>
+        <th>姓名</th>
+        <th>假名</th>
+        <th>邮箱</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- 选课结果将动态加载到这里 -->
+    </tbody>
+  </table>
+
+  <button id="export-btn" class="btn">导出为CSV</button>
+  <a href="index.html" class="btn cancel">返回首页</a>
+</div>
+
+<script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+<script>
+  // 创建 Supabase 客户端
+  const SUPABASE_URL = "https://iodijnhbxihastuknqky.supabase.co";
+  const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlvZGlqbmhieGloYXN0dWtucWt5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njk4NjgyNTIsImV4cCI6MjA4NTQ0NDI1Mn0.PTG1s0Zv14VX-yfrZNmJqyu-R7wlvJl3_YYcq40g6Y4";
+  const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+  // 从数据库获取选课结果
+  async function loadEnrollments() {
+    const { data, error } = await supabaseClient
+      .from("enrollments")
+      .select("*");
+
+    if (error) {
+      console.error("查询失败:", error.message);
+      return;
+    }
+
+    const tableBody = document.querySelector("#result-table tbody");
+    data.forEach(row => {
+      const tr = document.createElement("tr");
+
+      const tdTimeSlot = document.createElement("td");
+      tdTimeSlot.textContent = row.time_slot;
+      tr.appendChild(tdTimeSlot);
+
+      const tdDate = document.createElement("td");
+      tdDate.textContent = row.date;
+      tr.appendChild(tdDate);
+
+      const tdName = document.createElement("td");
+      tdName.textContent = row.name;
+      tr.appendChild(tdName);
+
+      const tdKana = document.createElement("td");
+      tdKana.textContent = row.kana;
+      tr.appendChild(tdKana);
+
+      const tdEmail = document.createElement("td");
+      tdEmail.textContent = row.email;
+      tr.appendChild(tdEmail);
+
+      tableBody.appendChild(tr);
+    });
+  }
+
+  // 导出结果为CSV
+  function exportCSV() {
+    const rows = document.querySelectorAll("#result-table tbody tr");
+    const csvContent = [];
+    
+    // 添加表头
+    const header = ["时间段", "日期", "姓名", "假名", "邮箱"];
+    csvContent.push(header.join(","));
+    
+    // 添加数据行
+    rows.forEach(row => {
+      const cells = row.querySelectorAll("td");
+      const rowData = [];
+      cells.forEach(cell => {
+        rowData.push(cell.textContent);
+      });
+      csvContent.push(rowData.join(","));
+    });
+
+    // 创建CSV文件
+    const csvString = csvContent.join("\n");
+    const blob = new Blob([csvString], { type: "text/csv" });
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = "enrollments.csv"; // 设置下载文件名
+    link.click();
+  }
+
+  // 点击导出按钮时触发导出操作
+  document.getElementById("export-btn").onclick = exportCSV;
+
+  // 加载选课数据
+  loadEnrollments();
+</script>
+
+</body>
+</html>
