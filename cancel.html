@@ -194,7 +194,7 @@
       return;
     }
 
-    const { error } = await supabase
+    const { error } = await supabaseClient
       .from("enrollments")
       .delete()
       .eq("email", row.email)
@@ -213,5 +213,6 @@
 
 </body>
 </html>
+
 
 
