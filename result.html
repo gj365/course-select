@@ -69,8 +69,8 @@
   <table id="result-table">
     <thead>
       <tr>
-        <th>时间段</th>
         <th>日期</th>
+        <th>时间段</th>
         <th>姓名</th>
         <th>假名</th>
         <th>邮箱</th>
@@ -92,7 +92,7 @@
   const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlvZGlqbmhieGloYXN0dWtucWt5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njk4NjgyNTIsImV4cCI6MjA4NTQ0NDI1Mn0.PTG1s0Zv14VX-yfrZNmJqyu-R7wlvJl3_YYcq40g6Y4";
   const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-  // 从数据库获取选课结果
+  // 从数据库获取选课结果并排序
   async function loadEnrollments() {
     const { data, error } = await supabaseClient
       .from("enrollments")
@@ -103,17 +103,30 @@
       return;
     }
 
+    // 按日期和时间段排序
+    data.sort((a, b) => {
+      const dateA = new Date(a.date);
+      const dateB = new Date(b.date);
+      if (dateA !== dateB) {
+        return dateA - dateB; // 如果日期不一样，按日期排序
+      }
+      // 如果日期相同，按时间段排序
+      const timeA = a.time_slot.split(" - ")[0];
+      const timeB = b.time_slot.split(" - ")[0];
+      return timeA.localeCompare(timeB); // 按时间段排序
+    });
+
     const tableBody = document.querySelector("#result-table tbody");
     data.forEach(row => {
       const tr = document.createElement("tr");
 
-      const tdTimeSlot = document.createElement("td");
-      tdTimeSlot.textContent = row.time_slot;
-      tr.appendChild(tdTimeSlot);
-
       const tdDate = document.createElement("td");
       tdDate.textContent = row.date;
       tr.appendChild(tdDate);
+
+      const tdTimeSlot = document.createElement("td");
+      tdTimeSlot.textContent = row.time_slot;
+      tr.appendChild(tdTimeSlot);
 
       const tdName = document.createElement("td");
       tdName.textContent = row.name;
@@ -137,7 +150,7 @@
     const csvContent = [];
     
     // 添加表头
-    const header = ["时间段", "日期", "姓名", "假名", "邮箱"];
+    const header = ["日期", "时间段", "姓名", "假名", "邮箱"];
     csvContent.push(header.join(","));
     
     // 添加数据行
