@@ -57,16 +57,30 @@
       return;
     }
 
-    data.sort((a, b) => {
-      const dateA = new Date(a.date);
-      const dateB = new Date(b.date);
-      if (dateA !== dateB) {
-        return dateA - dateB;
-      }
-      const timeA = a.time_slot.split(" - ")[0];
-      const timeB = b.time_slot.split(" - ")[0];
-      return timeA.localeCompare(timeB);
-    });
+data.sort((a, b) => {
+  const timeA = a.time_slot.split(" - ");
+  const timeB = b.time_slot.split(" - ");
+
+  // 提取开始时间（例如 '9:00' 转为 9，'9:30' 转为 9.5）
+  const startA = convertToDecimalTime(timeA[0]);
+  const startB = convertToDecimalTime(timeB[0]);
+
+  if (startA !== startB) {
+    return startA - startB; // 按开始时间排序
+  }
+
+  // 如果开始时间相同，按结束时间排序
+  const endA = convertToDecimalTime(timeA[1]);
+  const endB = convertToDecimalTime(timeB[1]);
+  return endA - endB; // 按结束时间排序
+});
+
+// 将时间（例如 '9:30'）转换为数字（例如 9.5）
+function convertToDecimalTime(time) {
+  const [hour, minute] = time.split(":").map(Number);
+  return hour + minute / 60; // 返回一个小时的小数表示
+}
+
 
     const tbody = document.querySelector("#result-table tbody");
     tbody.innerHTML = "";
@@ -113,3 +127,4 @@
 
 </body>
 </html>
+
