@@ -125,6 +125,7 @@
           <th>国籍・地域</th>
           <th>身分</th>
           <th>メールアドレス</th>
+          <th>登録日時</th>
         </tr>
       </thead>
       <tbody></tbody>
@@ -181,6 +182,7 @@
           <td>${row.nationality}</td>
           <td>${row.status}</td>
           <td>${row.email}</td>
+          <td>${formatDateTime(row.created_at)}</td>
         `;
 
         tbody.appendChild(tr);
@@ -198,7 +200,7 @@
       const csv = [];
 
       const bom = "\ufeff";
-      const header = ["日程", "時間", "名前", "カタカナ", "国籍・地域", "身分", "メールアドレス"];
+      const header = ["日程", "時間", "名前", "カタカナ", "国籍・地域", "身分", "メールアドレス", "登録日時"];
       csv.push(header.join(","));
 
       rows.forEach(row => {
@@ -215,6 +217,21 @@
       link.click();
     }
 
+function formatDateTime(dateString) {
+  if (!dateString) return "";
+
+  const date = new Date(dateString);
+
+  const yyyy = date.getFullYear();
+  const mm = String(date.getMonth() + 1).padStart(2, "0");
+  const dd = String(date.getDate()).padStart(2, "0");
+  const hh = String(date.getHours()).padStart(2, "0");
+  const min = String(date.getMinutes()).padStart(2, "0");
+  const ss = String(date.getSeconds()).padStart(2, "0");
+
+  return `${yyyy}-${mm}-${dd} ${hh}:${min}:${ss}`;
+}
+
     document.getElementById("export-btn").onclick = exportCSV;
 
     loadEnrollments();
@@ -223,3 +240,4 @@
 </body>
 
 </html>
+
