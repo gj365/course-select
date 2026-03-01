@@ -129,11 +129,11 @@
       <p><strong>身分 / Status：</strong>
         <select id="status" required>
           <option value="">-- 選択してください / Please select --</option>
-          <option value="J">J：JUSST Program student</option>
-          <option value="RS">RS：研究生 / Research student</option>
-          <option value="D">D：博士後期課程学生 / Ph. D. student</option>
-          <option value="M">M：博士前期課程学生 / Master student</option>
-          <option value="S">S：配偶者 / Spouse</option>
+          <option value="JUSST Program student">J：JUSST Program student</option>
+          <option value="研究生 / Research student">RS：研究生 / Research student</option>
+          <option value="博士後期課程学生 / Ph. D. student">D：博士後期課程学生 / Ph. D. student</option>
+          <option value="博士前期課程学生 / Master student">M：博士前期課程学生 / Master student</option>
+          <option value="配偶者">S：配偶者 / Spouse</option>
         </select>
       </p>
 
@@ -204,7 +204,7 @@
       const email = document.getElementById("email").value;
 
       if (!name || !kana || !nationality || !status || !email) {
-        alert("すべての項目を入力してください。 / Please fill in all fields.");
+        alert("すべての項目を入力してください。 \n Please fill in all fields.");
         return;
       }
 
@@ -250,4 +250,5 @@ function formatJapaneseDate(dateStr) {
 </body>
 
 </html>
+
 
