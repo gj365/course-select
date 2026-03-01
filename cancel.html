@@ -2,7 +2,7 @@
 <html lang="zh">
 <head>
   <meta charset="UTF-8">
-  <title>选课取消</title>
+  <title>キャンセル/cancel</title>
   <style>
     body {
       font-family: system-ui, -apple-system, BlinkMacSystemFont;
@@ -90,23 +90,24 @@
 <body>
 
 <div class="container">
-  <h2>选课取消</h2>
+  <h2>キャンセル/cancel</h2>
 
   <!-- 搜索框 -->
   <div class="search-box">
-    <input type="email" id="email" placeholder="请输入报名时使用的邮箱">
-    <button id="search">检索</button>
+    <input type="email" id="email" placeholder="メールアドレス/mail">
+    <button id="search">検索/search</button>
   </div>
 
   <!-- 结果表格 -->
   <table id="result-table" style="display:none;">
     <thead>
       <tr>
-        <th>日期</th>
-        <th>时间段</th>
-        <th>姓名</th>
-        <th>假名</th>
-        <th>邮箱</th>
+        <th>時間</th>
+        <th>日程</th>
+        <th>名前/Name(alphabet)</th>
+        <th>名前/Name(katakana)</th>
+        <th>国籍・地域/Nationality・Region</th>
+        <th>身分/Status</th>
         <th>操作</th>
       </tr>
     </thead>
@@ -116,7 +117,7 @@
   <div id="empty" class="empty"></div>
 
   <div class="actions">
-    <a href="index.html">← 返回选课首页</a>
+    <a href="index.html">← Topに戻る/BACK</a>
   </div>
 </div>
 
@@ -136,7 +137,7 @@
     const email = document.getElementById("email").value.trim();
 
     if (!email) {
-      alert("请输入邮箱");
+      alert("予約時のメールアドレスを入力してください。\nPlease enter the email address used for the reservation.");
       return;
     }
 
@@ -150,13 +151,13 @@
       .eq("email", email);
 
     if (error) {
-      alert("查询失败");
+      alert("エラー/Error");
       console.error(error);
       return;
     }
 
     if (data.length === 0) {
-      emptyDiv.textContent = "没有找到该邮箱的选课记录";
+      emptyDiv.textContent = "予約記録がありません。/No reservation found.";
       return;
     }
 
@@ -190,7 +191,7 @@
 
   // 取消选课（删除）
   async function cancelEnrollment(row) {
-    if (!confirm(`确认取消 ${row.date} ${row.time_slot} 的选课吗？`)) {
+    if (!confirm(` ${row.date} ${row.time_slot} の予約をキャンセルしますか。\nCancel the reservation for ${row.date} ${row.time_slot}`)) {
       return;
     }
 
@@ -202,10 +203,10 @@
       .eq("time_slot", row.time_slot);
 
     if (error) {
-      alert("取消失败");
+      alert("エラー/error");
       console.error(error);
     } else {
-      alert("已取消选课");
+      alert("キャンセルしました。\nReservation cancelled.");
       document.getElementById("search").click(); // 重新检索
     }
   }
@@ -213,6 +214,7 @@
 
 </body>
 </html>
+
 
 
 
