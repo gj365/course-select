@@ -11,29 +11,22 @@
       margin: 0;
       padding: 0;
       background-color: #f7f7f7;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
     }
 
     .container {
-      margin-top: 20px;
-      padding: 20px;
+      margin: 30px auto;
+      padding: 25px;
       border: 1px solid #ddd;
       max-width: 600px;
-      margin-left: auto;
-      margin-right: auto;
       background-color: #fff;
       border-radius: 8px;
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-      flex: 1;
     }
 
     h2 {
       text-align: center;
       color: #444;
-      margin-bottom: 30px;
-      font-size: 24px;
+      margin-bottom: 25px;
     }
 
     .details p {
@@ -41,53 +34,72 @@
       font-weight: 500;
     }
 
-    input,
+    input[type="text"],
+    input[type="email"],
     select {
       width: 100%;
-      padding: 12px;
-      margin-top: 8px;
-      border: 1px solid #ddd;
+      padding: 10px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
       border-radius: 5px;
-      font-size: 16px;
+      font-size: 15px;
       box-sizing: border-box;
     }
 
     .btn {
-      display: inline-block;
-      padding: 12px 20px;
-      background: #4CAF50;
-      color: white;
+      display: block;
+      width: 100%;
+      padding: 12px;
       border: none;
       border-radius: 5px;
-      margin-top: 20px;
-      cursor: pointer;
-      width: 100%;
       font-size: 16px;
+      cursor: pointer;
+      box-sizing: border-box;
+      margin-top: 15px;
+      transition: background 0.2s ease;
+    }
+
+    .btn.primary {
+      background: #4CAF50;
+      color: white;
+    }
+
+    .btn.primary:hover {
+      background: #45a049;
     }
 
     .btn.cancel {
       background: #f44336;
-      margin-top: 10px;
+      color: white;
+    }
+
+    .btn.cancel:hover {
+      background: #d32f2f;
+    }
+
+    .btn:disabled {
+      background: #ccc;
+      cursor: not-allowed;
     }
 
     .alert {
       color: #d9534f;
       text-align: center;
-      margin-top: 20px;
+      margin-top: 15px;
     }
 
     footer {
       text-align: center;
       padding: 15px;
-      font-size: 14px;
-      background: #f0f0f0;
-      color: #666;
-      margin-top: 20px;
+      margin-top: 30px;
+      font-size: 13px;
+      color: #777;
     }
 
     @media (max-width: 600px) {
       .container {
         width: 90%;
+        padding: 20px;
       }
     }
   </style>
@@ -102,23 +114,19 @@
       <p><strong>時間：</strong><span id="time-slot"></span></p>
       <p><strong>日程：</strong><span id="date"></span></p>
 
-      <p>
-        <strong>名前 / Name (alphabet)：</strong>
-        <input type="text" id="name" required>
+      <p><strong>名前 / Name (alphabet)：</strong>
+        <input type="text" id="name" placeholder="e.g. Yamada Taro" required>
       </p>
 
-      <p>
-        <strong>名前 / Name (katakana)：</strong>
-        <input type="text" id="kana" required>
+      <p><strong>名前 / Name (katakana)：</strong>
+        <input type="text" id="kana" placeholder="ヤマダ タロウ" required>
       </p>
 
-      <p>
-        <strong>国籍・地域 / Nationality・Region：</strong>
-        <input type="text" id="nationality" required>
+      <p><strong>国籍・地域 / Nationality・Region：</strong>
+        <input type="text" id="nationality" placeholder="e.g. China / 日本 / Vietnam" required>
       </p>
 
-      <p>
-        <strong>身分 / Status：</strong>
+      <p><strong>身分 / Status：</strong>
         <select id="status" required>
           <option value="">-- 選択してください / Please select --</option>
           <option value="J">J：JUSST Program student</option>
@@ -129,27 +137,27 @@
         </select>
       </p>
 
-      <p>
-        <strong>メールアドレス / Mail：</strong>
-        <input type="email" id="email" required>
+      <p><strong>メールアドレス / Mail：</strong>
+        <input type="email" id="email" placeholder="example@email.com" required>
       </p>
     </div>
 
-    <a href="index.html" class="btn cancel">戻る / BACK</a>
-    <button id="confirm" class="btn">確定 / OK</button>
+    <button id="back" class="btn cancel">戻る / BACK</button>
+    <button id="confirm" class="btn primary">確定 / OK</button>
 
     <div id="alert-message" class="alert"></div>
   </div>
 
   <footer>
-    Version 1.0 | Designed by Your Name | © 2026
+    © 2026 UEC University | Designed & Developed by HUYIQUN
   </footer>
 
   <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
-
   <script>
+
     const SUPABASE_URL = "https://iodijnhbxihastuknqky.supabase.co";
     const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlvZGlqbmhieGloYXN0dWtucWt5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njk4NjgyNTIsImV4cCI6MjA4NTQ0NDI1Mn0.PTG1s0Zv14VX-yfrZNmJqyu-R7wlvJl3_YYcq40g6Y4";
+
     const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
     const urlParams = new URLSearchParams(window.location.search);
@@ -159,6 +167,10 @@
     document.getElementById("time-slot").textContent = timeSlot;
     document.getElementById("date").textContent = date;
 
+    document.getElementById("back").onclick = () => {
+      window.location.href = "index.html";
+    };
+
     async function checkEnrollmentExistence() {
       const { count, error } = await supabaseClient
         .from("enrollments")
@@ -167,13 +179,13 @@
         .eq("date", date);
 
       if (error) {
-        console.error(error.message);
+        console.error("查询失败:", error.message);
         return false;
       }
 
       if (count >= 2) {
         document.getElementById("alert-message").textContent =
-          "この時間帯は満席です。/ Fully booked.";
+          "この時間帯は満席です。ほかの時間を選択してください。 / Fully booked.";
         setTimeout(() => {
           window.location.href = "index.html";
         }, 3000);
@@ -184,14 +196,15 @@
     }
 
     document.getElementById("confirm").onclick = async () => {
-      const name = document.getElementById("name").value.trim();
-      const kana = document.getElementById("kana").value.trim();
-      const nationality = document.getElementById("nationality").value.trim();
+
+      const name = document.getElementById("name").value;
+      const kana = document.getElementById("kana").value;
+      const nationality = document.getElementById("nationality").value;
       const status = document.getElementById("status").value;
-      const email = document.getElementById("email").value.trim();
+      const email = document.getElementById("email").value;
 
       if (!name || !kana || !nationality || !status || !email) {
-        alert("すべての項目を入力してください。/ Please fill in all fields.");
+        alert("すべての項目を入力してください。 / Please fill in all fields.");
         return;
       }
 
@@ -211,14 +224,15 @@
         }]);
 
       if (error) {
-        alert("予約に失敗しました。/ Booking failed.");
+        alert("予約に失敗しました。再度お試しください。");
       } else {
         alert("予約完了 / Reservation successful");
         window.location.href = "index.html";
       }
     };
+
   </script>
 
 </body>
-</html>
 
+</html>
