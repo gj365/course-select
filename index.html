@@ -292,7 +292,7 @@
       if (flag) {
         const cell = document.querySelector(`td[data-time="${time}"][data-date="${date}"]`);
         if (cell.textContent !== "×") {
-          window.location.href = `information.html?time=${time}&date=${date}`;
+          window.location.href = `input.html?time=${time}&date=${date}`;
         } else {
           alert("この時間帯は満員です。\nFully booked.");
         }
@@ -357,6 +357,7 @@
 </body>
 
 </html>
+
 
 
 
