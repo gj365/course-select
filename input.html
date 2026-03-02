@@ -185,7 +185,7 @@
 
       if (count >= 2) {
         document.getElementById("alert-message").textContent =
-          "この時間帯は満席です。ほかの時間を選択してください。 /n Fully booked.";
+          "この時間帯は満席です。ほかの時間を選択してください。\nFully booked.";
         setTimeout(() => {
           window.location.href = "index.html";
         }, 3000);
@@ -195,41 +195,63 @@
       return true;
     }
 
-    document.getElementById("confirm").onclick = async () => {
+document.getElementById("confirm").onclick = async () => {
 
-      const name = document.getElementById("name").value;
-      const kana = document.getElementById("kana").value;
-      const nationality = document.getElementById("nationality").value;
-      const status = document.getElementById("status").value;
-      const email = document.getElementById("email").value;
+  const name = document.getElementById("name").value.trim();
+  const kana = document.getElementById("kana").value.trim();
+  const nationality = document.getElementById("nationality").value.trim();
+  const status = document.getElementById("status").value;
+  const email = document.getElementById("email").value.trim();
 
-      if (!name || !kana || !nationality || !status || !email) {
-        alert("すべての項目を入力してください。 \n Please fill in all fields.");
-        return;
-      }
+  // ===== 1. 必填检查 =====
+  if (!name || !kana || !nationality || !status || !email) {
+    alert("すべての項目を入力してください。\nPlease fill in all fields.");
+    return;
+  }
 
-      const canInsert = await checkEnrollmentExistence();
-      if (!canInsert) return;
+  // ===== 2. 满员检查 =====
+  const canInsert = await checkEnrollmentExistence();
+  if (!canInsert) return;
 
-      const { error } = await supabaseClient
-        .from("enrollments")
-        .insert([{
-          time_slot: timeSlot,
-          date: date,
-          name: name,
-          kana: kana,
-          nationality: nationality,
-          status: status,
-          email: email
-        }]);
+  // ===== 3. 生成确认信息 =====
+  const confirmMessage =
+    "以下の内容で予約します。\n\n" +
+    `日程：${formatJapaneseDate(date)}\n` +
+    `時間：${timeSlot}\n` +
+    `名前：${name}\n` +
+    `カタカナ：${kana}\n` +
+    `国籍・地域：${nationality}\n` +
+    `身分：${status}\n` +
+    `メールアドレス：${email}\n\n` +
+    "よろしいですか？";
 
-      if (error) {
-        alert("予約に失敗しました。再度お試しください。");
-      } else {
-        alert("予約完了 / Reservation successful");
-        window.location.href = "index.html";
-      }
-    };
+  // ===== 4. 弹出确认窗口 =====
+  const userConfirmed = confirm(confirmMessage);
+  if (!userConfirmed) {
+    return; // 用户取消
+  }
+
+  // ===== 5. 真正写入数据库 =====
+  const { error } = await supabaseClient
+    .from("enrollments")
+    .insert([{
+      time_slot: timeSlot,
+      date: date,
+      name: name,
+      kana: kana,
+      nationality: nationality,
+      status: status,
+      email: email
+    }]);
+
+  if (error) {
+    alert("予約に失敗しました。再度お試しください。");
+    console.error(error);
+  } else {
+    alert("予約完了 / Reservation successful");
+    window.location.href = "index.html";
+  }
+};
 
 function formatJapaneseDate(dateStr) {
   // dateStr 例如 "3/30"
@@ -250,6 +272,7 @@ function formatJapaneseDate(dateStr) {
 </body>
 
 </html>
+
 
 
 
